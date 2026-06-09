@@ -1,7 +1,7 @@
 {
   "name": "Venterprise APP",
   "short_name": "Proposal Template",
-  "start_url": "/Venterprise-App",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
