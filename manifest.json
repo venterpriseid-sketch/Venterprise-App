@@ -1,13 +1,13 @@
 {
   "name": "Venterprise APP",
-  "short_name": "VEnterprise APP",
+  "short_name": "Proposal Template",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0A84FF",
   "icons": [
     {
-      "src": "./icon-1024x1024.png",
+      "src": "/icon-1024x1024.png",
       "sizes": "1024x1024",
       "type": "image/png"
     }
