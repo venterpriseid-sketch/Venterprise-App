@@ -1,5 +1,5 @@
-async function checkUpdate() {
-  const currentVersion = '4.22';
+async function checkUpdate(v) {
+  const currentVersion = v;
 
   try {
     const res = await fetch(
