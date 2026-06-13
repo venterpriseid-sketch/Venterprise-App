@@ -1,4 +1,23 @@
+async function checkUpdate() {
+  const currentVersion = '4.22';
 
+  try {
+    const res = await fetch(
+      'version.txt?t=' + Date.now(),
+      { cache: 'no-store' }
+    );
+
+    const latest = (await res.text()).trim();
+
+    if (latest !== currentVersion) {
+      location.href = location.pathname + '?v=' + Date.now();
+    } else {
+      alert('Sudah versi terbaru');
+    }
+  } catch (e) {
+    alert('Gagal cek update');
+  }
+}
 // ════════════════════════════════════
 // UTILS
 // ════════════════════════════════════
