@@ -208,15 +208,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <div class="ptab-lbl">Smartlink Protection Life</div>
       <div class="ptab-sub">Unit-Link</div>
     </div>
-    <div class="ptab">
+    <div class="ptab" onclick="switchTab('legacy')">
       <div class="ptab-ico">🏛️</div>
       <div class="ptab-lbl">Legacy</div>
-      <div class="ptab-sub">(SOON)</div>
+      <div class="ptab-sub">Warisan & Investasi</div>
     </div>
-    <div class="ptab">
+    <div class="ptab" onclick="switchTab('bundling')">
       <div class="ptab-ico">📦</div>
       <div class="ptab-lbl">Bundling</div>
-      <div class="ptab-sub">(SOON)</div>
+      <div class="ptab-sub">Paket Kombinasi</div>
     </div>
   </div>
 
@@ -946,7 +946,7 @@ function unduhPDF(nama){
 // GENERATE: CRITICAL ILLNESS
 // ════════════════════════
 function generateCI(){
-  const opts=[1,2,3].map(i=>({
+  const allOpts=[1,2,3].map(i=>({
     premi: nv('ci-p'+i),
     frek:  sv('ci-f'+i),
     mp:    parseInt(sv('ci-mp'+i)),
@@ -956,7 +956,17 @@ function generateCI(){
     jiwa:  sv('ci-jiwa'+i),
     mk:    sv('ci-mk'+i),
     tab:   chkd('ci-tab'+i),
+    idx:   i,
   }));
+
+  // Hanya opsi yang ada premi-nya
+  const opts=allOpts.filter(o=>o.premi>0);
+  if(opts.length===0){ alert('Isi minimal 1 opsi premi!'); return; }
+
+  // Update header kolom
+  const thead=document.querySelector('#ci-tbody').closest('table').querySelector('thead tr');
+  thead.innerHTML='<th>Manfaat</th>';
+  opts.forEach(o=>{ thead.innerHTML+=`<th>Opsi ${o.idx}</th>`; });
 
   g('ci-res-sub').textContent='Dibuat pada '+hariIni();
   g('ci-ft-date').textContent='Digenerate: '+hariIni()+' | Allianz Indonesia';
@@ -967,7 +977,6 @@ function generateCI(){
   html+='<tr>';
   html+='<td><div class="row-lbl"><span>💵</span>Premi & Frekuensi</div></td>';
   opts.forEach(o=>{
-    const tp=totalPremi(o.premi,o.frek,o.mp);
     html+=`<td>
       <div class="cv">${rp(o.premi)}</div>
       <div class="csub">${frekLabel(o.frek)} · Bayar ${o.mp} Tahun</div>
@@ -981,41 +990,50 @@ function generateCI(){
   opts.forEach(o=>{
     html+=`<td>
       <div class="cv">${rp(o.up)}</div>
-      <div class="csub">Biaya pengobatan tidak membebani keluarga.</div>
+      <div class="csub">Biaya hidup keluarga tetap terjamin.</div>
     </td>`;
   });
   html+='</tr>';
 
-  // Bonus UP
-  html+='<tr>';
-  html+='<td><div class="row-lbl"><span>🎁</span>Bonus UP</div></td>';
-  opts.forEach(o=>{
-    const bonusVal=o.up*0.5;
-    const isAcp=o.bonus==='acp';
-    const bonusNote=isAcp?'Aktif 50% mulai Tahun ke-2':'Aktif 50% sejak awal polis';
-    html+=`<td>
-      <div class="cv">${rp(bonusVal)}</div>
-      <div class="cnote">${bonusNote}</div>
-    </td>`;
-  });
-  html+='</tr>';
+  // Bonus UP — hanya kalau minimal 1 opsi bonus != 'none'
+  const anyBonus=opts.some(o=>o.bonus!=='none');
+  if(anyBonus){
+    html+='<tr>';
+    html+='<td><div class="row-lbl"><span>🎁</span>Bonus UP</div></td>';
+    opts.forEach(o=>{
+      if(o.bonus==='none'){
+        html+=`<td><div class="cv" style="color:var(--text3)">—</div></td>`;
+      } else {
+        const bonusVal=o.up*0.5;
+        const bonusNote=o.bonus==='acp'?'Aktif 50% mulai Tahun ke-2':'Aktif 50% sejak awal polis';
+        html+=`<td>
+          <div class="cv">${rp(bonusVal)}</div>
+          <div class="cnote">${bonusNote}</div>
+        </td>`;
+      }
+    });
+    html+='</tr>';
+  }
 
-  // Early CI
-  html+='<tr>';
-  html+='<td><div class="row-lbl"><span>⚡</span>Manfaat Kritis<br><span style="font-size:10px;color:var(--text3);font-weight:400">Tahap Awal</span></div></td>';
-  opts.forEach(o=>{
-    if(o.early===0){
-      html+=`<td><div class="cv" style="color:var(--text3)">—</div><div class="csub">Tidak termasuk</div></td>`;
-    } else {
-      const bonusVal=o.up*0.5;
-      const earlyVal=(o.up+bonusVal)*(o.early/100);
-      html+=`<td>
-        <div class="cv">${rp(earlyVal)}</div>
-        <div class="csub">Early CI ${o.early}% dari (UP + Bonus)</div>
-      </td>`;
-    }
-  });
-  html+='</tr>';
+  // Early CI — hanya kalau minimal 1 opsi early > 0
+  const anyEarly=opts.some(o=>o.early>0);
+  if(anyEarly){
+    html+='<tr>';
+    html+='<td><div class="row-lbl"><span>⚡</span>Manfaat Kritis<br><span style="font-size:10px;color:var(--text3);font-weight:400">Tahap Awal</span></div></td>';
+    opts.forEach(o=>{
+      if(o.early===0){
+        html+=`<td><div class="cv" style="color:var(--text3)">—</div></td>`;
+      } else {
+        const bonusVal=o.up*0.5;
+        const earlyVal=(o.up+bonusVal)*(o.early/100);
+        html+=`<td>
+          <div class="cv">${rp(earlyVal)}</div>
+          <div class="csub">Early CI ${o.early}% dari (UP + Bonus)</div>
+        </td>`;
+      }
+    });
+    html+='</tr>';
+  }
 
   // Manfaat Jiwa
   html+='<tr>';
@@ -1039,21 +1057,24 @@ function generateCI(){
   });
   html+='</tr>';
 
-  // Manfaat Tabungan
-  html+='<tr>';
-  html+='<td><div class="row-lbl"><span>💰</span>Manfaat Tabungan<br><span style="font-size:10px;color:var(--text3);font-weight:400">di Thn ke-20</span></div></td>';
-  opts.forEach(o=>{
-    const tp=totalPremi(o.premi,o.frek,o.mp);
-    if(o.tab){
-      html+=`<td>
-        <div class="w-yes">✔ ${rp(tp)}</div>
-        <div class="csub">Jika sehat, dikembalikan di tahun ke-20.</div>
-      </td>`;
-    } else {
-      html+=`<td><div class="w-no">✘ Tidak Tersedia</div></td>`;
-    }
-  });
-  html+='</tr>';
+  // Manfaat Tabungan — hanya kalau minimal 1 opsi tab = true
+  const anyTab=opts.some(o=>o.tab);
+  if(anyTab){
+    html+='<tr>';
+    html+='<td><div class="row-lbl"><span>💰</span>Manfaat Tabungan<br><span style="font-size:10px;color:var(--text3);font-weight:400">di Thn ke-20</span></div></td>';
+    opts.forEach(o=>{
+      const tp=totalPremi(o.premi,o.frek,o.mp);
+      if(o.tab){
+        html+=`<td>
+          <div class="w-yes">✔ ${rp(tp)}</div>
+          <div class="csub">Jika sehat, dikembalikan di tahun ke-20.</div>
+        </td>`;
+      } else {
+        html+=`<td><div class="cv" style="color:var(--text3)">—</div></td>`;
+      }
+    });
+    html+='</tr>';
+  }
 
   // Masa Kontrak
   html+='<tr>';
@@ -1074,14 +1095,23 @@ function generateCI(){
 // GENERATE: SMARTLINK PROTECTION LIFE
 // ════════════════════════
 function generateSPL(){
-  const opts=[1,2,3].map(i=>({
+  const allOpts=[1,2,3].map(i=>({
     premi: nv('spl-p'+i),
     frek:  sv('spl-f'+i),
     jiwa:  nv('spl-j'+i),
     kritis:nv('spl-k'+i),
     acc:   nv('spl-a'+i),
     bp:    chkd('spl-bp'+i),
+    idx:   i,
   }));
+
+  const opts=allOpts.filter(o=>o.premi>0);
+  if(opts.length===0){ alert('Isi minimal 1 opsi premi!'); return; }
+
+  // Update header
+  const thead=document.querySelector('#spl-tbody').closest('table').querySelector('thead tr');
+  thead.innerHTML='<th>Manfaat</th>';
+  opts.forEach(o=>{ thead.innerHTML+=`<th>Opsi ${o.idx}</th>`; });
 
   g('spl-res-sub').textContent='Dibuat pada '+hariIni();
   g('spl-ft-date').textContent='Digenerate: '+hariIni()+' | Allianz Indonesia';
@@ -1092,7 +1122,6 @@ function generateSPL(){
   html+='<tr>';
   html+='<td><div class="row-lbl"><span>💵</span>Premi & Frekuensi</div></td>';
   opts.forEach(o=>{
-    const tp=totalPremi(o.premi,o.frek,0);
     html+=`<td>
       <div class="cv">${rp(o.premi)}</div>
       <div class="csub">${frekLabel(o.frek)}</div>
@@ -1122,7 +1151,7 @@ function generateSPL(){
   });
   html+='</tr>';
 
-  // Kecelakaan (hanya jika ada isi)
+  // Kecelakaan — hanya kalau minimal 1 ada isi
   const anyAcc=opts.some(o=>o.acc>0);
   if(anyAcc){
     html+='<tr>';
@@ -1135,16 +1164,19 @@ function generateSPL(){
     html+='</tr>';
   }
 
-  // Bebas Premi
-  html+='<tr>';
-  html+='<td><div class="row-lbl"><span>✅</span>Bebas Premi</div></td>';
-  opts.forEach(o=>{
-    html+=`<td>
-      <div class="${o.bp?'w-yes':'w-no'}">${o.bp?'✔ Termasuk':'✘ Tidak Termasuk'}</div>
-      <div class="w-sub" style="font-size:11px;color:var(--text2);margin-top:3px">${o.bp?'Perlindungan tetap aktif tanpa perlu membayar premi.':'Premi tetap perlu dibayarkan selama masa perlindungan.'}</div>
-    </td>`;
-  });
-  html+='</tr>';
+  // Bebas Premi — hanya kalau minimal 1 checked
+  const anyBP=opts.some(o=>o.bp);
+  if(anyBP){
+    html+='<tr>';
+    html+='<td><div class="row-lbl"><span>✅</span>Bebas Premi</div></td>';
+    opts.forEach(o=>{
+      html+=`<td>
+        <div class="${o.bp?'w-yes':'w-no'}">${o.bp?'✔ Termasuk':'✘ Tidak Termasuk'}</div>
+        <div class="w-sub" style="font-size:11px;color:var(--text2);margin-top:3px">${o.bp?'Perlindungan tetap aktif tanpa perlu membayar premi.':'Premi tetap perlu dibayarkan selama masa perlindungan.'}</div>
+      </td>`;
+    });
+    html+='</tr>';
+  }
 
   // Daily
   html+=dailyRow(opts);
@@ -1157,7 +1189,7 @@ function generateSPL(){
 // GENERATE: LEGACY
 // ════════════════════════
 function generateLegacy(){
-  const opts=[1,2,3].map(i=>({
+  const allOpts=[1,2,3].map(i=>({
     premi: nv('leg-p'+i),
     frek:  sv('leg-f'+i),
     mp:    parseInt(sv('leg-mp'+i)),
@@ -1166,7 +1198,16 @@ function generateLegacy(){
     mk:    sv('leg-mk'+i),
     ci:    chkd('leg-ci'+i),
     bp:    chkd('leg-bp'+i),
+    idx:   i,
   }));
+
+  const opts=allOpts.filter(o=>o.premi>0);
+  if(opts.length===0){ alert('Isi minimal 1 opsi premi!'); return; }
+
+  // Update header
+  const thead=document.querySelector('#legacy-tbody').closest('table').querySelector('thead tr');
+  thead.innerHTML='<th>Manfaat</th>';
+  opts.forEach(o=>{ thead.innerHTML+=`<th>Opsi ${o.idx}</th>`; });
 
   g('legacy-res-sub').textContent='Dibuat pada '+hariIni();
   g('legacy-ft-date').textContent='Digenerate: '+hariIni()+' | Allianz Indonesia';
@@ -1216,21 +1257,27 @@ function generateLegacy(){
   });
   html+='</tr>';
 
-  // Rider CI
-  html+='<tr>';
-  html+='<td><div class="row-lbl"><span>🏥</span>Rider Penyakit Kritis</div></td>';
-  opts.forEach(o=>{
-    html+=`<td><div class="${o.ci?'w-yes':'w-no'}">${o.ci?'✔ Termasuk':'✘ Tidak Termasuk'}</div></td>`;
-  });
-  html+='</tr>';
+  // Rider CI — hanya kalau minimal 1 checked
+  const anyCI=opts.some(o=>o.ci);
+  if(anyCI){
+    html+='<tr>';
+    html+='<td><div class="row-lbl"><span>🏥</span>Rider Penyakit Kritis</div></td>';
+    opts.forEach(o=>{
+      html+=`<td><div class="${o.ci?'w-yes':'w-no'}">${o.ci?'✔ Termasuk':'✘ Tidak Termasuk'}</div></td>`;
+    });
+    html+='</tr>';
+  }
 
-  // Bebas Premi
-  html+='<tr>';
-  html+='<td><div class="row-lbl"><span>✅</span>Bebas Premi</div></td>';
-  opts.forEach(o=>{
-    html+=`<td><div class="${o.bp?'w-yes':'w-no'}">${o.bp?'✔ Termasuk':'✘ Tidak Termasuk'}</div></td>`;
-  });
-  html+='</tr>';
+  // Bebas Premi — hanya kalau minimal 1 checked
+  const anyBP=opts.some(o=>o.bp);
+  if(anyBP){
+    html+='<tr>';
+    html+='<td><div class="row-lbl"><span>✅</span>Bebas Premi</div></td>';
+    opts.forEach(o=>{
+      html+=`<td><div class="${o.bp?'w-yes':'w-no'}">${o.bp?'✔ Termasuk':'✘ Tidak Termasuk'}</div></td>`;
+    });
+    html+='</tr>';
+  }
 
   // Daily
   html+=dailyRow(opts);
@@ -1243,7 +1290,7 @@ function generateLegacy(){
 // GENERATE: BUNDLING
 // ════════════════════════
 function generateBundling(){
-  const opts=[1,2,3].map(i=>({
+  const allOpts=[1,2,3].map(i=>({
     premi: nv('bun-p'+i),
     frek:  sv('bun-f'+i),
     jiwa:  nv('bun-j'+i),
@@ -1252,12 +1299,16 @@ function generateBundling(){
     acc:   chkd('bun-acc'+i),
     bp:    chkd('bun-bp'+i),
     tab:   chkd('bun-tab'+i),
+    idx:   i,
   }));
 
-  // Update header names
-  [0,1,2].forEach(i=>{
-    g('bun-th'+(i+1)).textContent=opts[i].nama;
-  });
+  const opts=allOpts.filter(o=>o.premi>0);
+  if(opts.length===0){ alert('Isi minimal 1 opsi premi!'); return; }
+
+  // Update header names (dynamic)
+  const thead=document.querySelector('#bundling-tbody').closest('table').querySelector('thead tr');
+  thead.innerHTML='<th>Manfaat</th>';
+  opts.forEach(o=>{ thead.innerHTML+=`<th>${o.nama}</th>`; });
 
   g('bundling-res-sub').textContent='Dibuat pada '+hariIni();
   g('bundling-ft-date').textContent='Digenerate: '+hariIni()+' | Allianz Indonesia';
@@ -1288,29 +1339,38 @@ function generateBundling(){
   });
   html+='</tr>';
 
-  // Rider Kecelakaan
-  html+='<tr>';
-  html+='<td><div class="row-lbl"><span>🚑</span>Rider Kecelakaan</div></td>';
-  opts.forEach(o=>{
-    html+=`<td><div class="${o.acc?'w-yes':'w-no'}">${o.acc?'✔ Termasuk':'✘ Tidak Termasuk'}</div></td>`;
-  });
-  html+='</tr>';
+  // Rider Kecelakaan — hanya kalau minimal 1 checked
+  const anyAcc=opts.some(o=>o.acc);
+  if(anyAcc){
+    html+='<tr>';
+    html+='<td><div class="row-lbl"><span>🚑</span>Rider Kecelakaan</div></td>';
+    opts.forEach(o=>{
+      html+=`<td><div class="${o.acc?'w-yes':'w-no'}">${o.acc?'✔ Termasuk':'✘ Tidak Termasuk'}</div></td>`;
+    });
+    html+='</tr>';
+  }
 
-  // Bebas Premi
-  html+='<tr>';
-  html+='<td><div class="row-lbl"><span>✅</span>Bebas Premi</div></td>';
-  opts.forEach(o=>{
-    html+=`<td><div class="${o.bp?'w-yes':'w-no'}">${o.bp?'✔ Termasuk':'✘ Tidak Termasuk'}</div></td>`;
-  });
-  html+='</tr>';
+  // Bebas Premi — hanya kalau minimal 1 checked
+  const anyBP=opts.some(o=>o.bp);
+  if(anyBP){
+    html+='<tr>';
+    html+='<td><div class="row-lbl"><span>✅</span>Bebas Premi</div></td>';
+    opts.forEach(o=>{
+      html+=`<td><div class="${o.bp?'w-yes':'w-no'}">${o.bp?'✔ Termasuk':'✘ Tidak Termasuk'}</div></td>`;
+    });
+    html+='</tr>';
+  }
 
-  // Tabungan
-  html+='<tr>';
-  html+='<td><div class="row-lbl"><span>💰</span>Manfaat Tabungan</div></td>';
-  opts.forEach(o=>{
-    html+=`<td><div class="${o.tab?'w-yes':'w-no'}">${o.tab?'✔ Termasuk':'✘ Tidak Termasuk'}</div></td>`;
-  });
-  html+='</tr>';
+  // Tabungan — hanya kalau minimal 1 checked
+  const anyTab=opts.some(o=>o.tab);
+  if(anyTab){
+    html+='<tr>';
+    html+='<td><div class="row-lbl"><span>💰</span>Manfaat Tabungan</div></td>';
+    opts.forEach(o=>{
+      html+=`<td><div class="${o.tab?'w-yes':'w-no'}">${o.tab?'✔ Termasuk':'✘ Tidak Termasuk'}</div></td>`;
+    });
+    html+='</tr>';
+  }
 
   // Daily
   html+=dailyRow(opts);
