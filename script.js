@@ -147,9 +147,6 @@ function getFieldsByType(type, pfx) {
     if (type === 'spl') return fieldsSPL(pfx);
     if (type === 'acp') return fieldsACP(pfx);
     if (type === 'cih') return fieldsCIH(pfx);
-    if (type === 'alm') return fieldsALM(pfx);  
-    if (type === 'alp') return fieldsALP(pfx);
-    if (type === 'afi') return fieldsAFI(pfx);
     return '';
 }
 
@@ -215,7 +212,7 @@ function buildRows(d, badge) {
         rows.push({ key: 'premi', label: '💵 Premi & Frekuensi', val: `<div class="cv">${rp(d.premi)}</div><div class="csub">${frekLabel(d.frek)}</div>${b}` });
         rows.push({ key: 'jiwa', label: '🛡️ Proteksi Jiwa', val: `<div class="cv">${rp(d.jiwa)}</div><div class="csub">Keluarga tetap melanjutkan hidup.</div>${b}`, mergeKey: 'jiwa', mergeVal: d.jiwa });
         rows.push({ key: 'kritis', label: '🏥 Penyakit Kritis', val: `<div class="cv">${rp(d.kritis)}</div><div class="csub">Mempertahankan kualitas dan biaya hidup.</div>${b}`, mergeKey: 'kritis', mergeVal: d.kritis });
-        rows.push({ key: 'earlyCi', label: '⚡ Kritis Tahap Awal', val: `<div class="cv">${rp(d.kritis * 50%)}</div><div class="csub">Manfaat 50% dari Uang Pertanggungan.</div>${b}` });
+        rows.push({ key: 'earlyCi', label: '⚡ Kritis Tahap Awal', val: `<div class="cv">${rp(d.kritis * 0.5)}</div><div class="csub">Manfaat 50% dari Uang Pertanggungan.</div>${b}` });
         if (d.acc > 0) rows.push({ key: 'acc', label: '🚑 Kecelakaan', val: `<div class="cv">${rp(d.acc)}</div><div class="csub">Perlindungan risiko kecelakaan.</div>${b}`, mergeKey: 'acc', mergeVal: d.acc });
         if (d.bp) rows.push({ key: 'bp', label: '✅ Bebas Premi', val: `<div class="w-yes">✔ Termasuk</div><div class="csub">Proteksi aktif tanpa membayar premi.</div>${b}` });
         rows.push({ key: 'masaKontrak', label: '📅 Masa Cover', val: `<div class="cv">Seumur Hidup</div>${b}` });
@@ -340,7 +337,33 @@ let bunState = [
 let _bunData = null;
 const bunColors = ['c1', 'c2', 'c3'];
 
+function saveBunValues() {
+    const saved = {};
+    document.querySelectorAll('#bun-grid input, #bun-grid select').forEach(el => {
+        if (el.id) {
+            if (el.type === 'checkbox') saved[el.id] = el.checked;
+            else saved[el.id] = el.value;
+        }
+    });
+    return saved;
+}
+
+function restoreBunValues(saved) {
+    Object.entries(saved).forEach(([id, val]) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (el.type === 'checkbox') {
+            el.checked = val;
+            const lbl = el.closest('.chk-fld');
+            if (lbl) lbl.classList.toggle('checked', val);
+        } else {
+            el.value = val;
+        }
+    });
+}
+
 function renderBunGrid() {
+    const saved = saveBunValues();
     const grid = g('bun-grid');
     grid.innerHTML = '';
     bunState.forEach((opt, oi) => {
@@ -373,6 +396,7 @@ function renderBunGrid() {
         col.innerHTML = html;
         grid.appendChild(col);
     });
+    restoreBunValues(saved);
 }
 
 function changeBunProdType(oi, pi, newType) {
