@@ -314,15 +314,14 @@ function generateStd() {
     html += '</tr>';
 
     // Title & vpills
-    const types = [...new Set(opts.map(o => o.type))];
-    const tnames = { 'Smartlink Protection Life', 'Critical Illness', 'Legacy' };
+    const types=[...new Set(opts.map(o=>o.type))];
+    const tnames={spl:'Smartlink Protection Life', acp:'Critical Illness',legacy:'Legacy'};
+    g('std-res-title').textContent='Perbandingan '+types.map(t=>tnames[t]).join(' & ');
+    g('std-vpills').innerHTML = `
+      <div class="vpill"><div class="vpill-ico">🛡️</div><div><div class="vpill-lbl">Proteksi Jiwa</div><div class="vpill-txt">Keluarga tetap dapat melanjutkan hidup tanpa menurunkan standar kualitas hidup.</div></div></div>
+      <div class="vpill"><div class="vpill-ico">🏥</div><div><div class="vpill-lbl">Penyakit Kritis</div><div class="vpill-txt">Aset dan keuangan tetap terjaga, Masalah Finansial tidak merugikan keluarga.</div></div></div>
+      <div class="vpill"><div class="vpill-ico">🏛️</div><div><div class="vpill-lbl">Warisan Terencana</div><div class="vpill-txt">Pastikan aset dan nilai hidup keluarga diwariskan dengan bermartabat.</div></div></div>`;
     g('std-res-title').textContent = 'Perbandingan Opsi Proteksi';
-    const pillsHtml = {
-        `<div class="vpill"><div class="vpill-ico">🛡️</div><div><div class="vpill-lbl">Proteksi Jiwa</div><div class="vpill-txt">Keluarga tetap dapat melanjutkan hidup tanpa menurunkan standar kualitas hidup.</div></div></div>
-        <div class="vpill"><div class="vpill-ico">🏥</div><div><div class="vpill-lbl">Penyakit Kritis</div><div class="vpill-txt">Aset dan keuangan tetap terjaga, Masalah Finansial tidak merugikan keluarga.</div></div></div>
-        <div class="vpill"><div class="vpill-ico">🏛️</div><div><div class="vpill-lbl">Warisan Terencana</div><div class="vpill-txt">Pastikan aset dan nilai hidup keluarga diwariskan dengan bermartabat.</div></div></div>`
-    };
-    g('std-vpills').innerHTML = pillsHtml;
     g('std-res-sub').textContent = 'Dibuat pada ' + hariIni();
     g('std-ft-date').textContent = hariIni() + ' | Revolve/VE ';
     g('std-tbody').innerHTML = html;
