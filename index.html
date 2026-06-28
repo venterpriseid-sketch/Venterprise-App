@@ -70,57 +70,21 @@
           </div>
         </div>
         <div class="card">
-          <div class="opts-grid">
+          <div class="opts-grid" id="std-opts-grid"></div>
 
-            <!-- STD OPT 1 -->
+          <!-- Template for standard option (cloned via JS) -->
+          <template id="std-opt-template">
             <div class="opt-col">
-              <div class="opt-hd c1">
-                <div class="opt-num">1</div>
-                <div class="opt-title">Opsi 1</div>
+              <div class="opt-hd">
+                <div class="opt-num"></div>
+                <div class="opt-title"></div>
               </div>
               <div class="prod-sel-wrap">
-                <select class="prod-sel" id="std-type1" onchange="renderStdFields(1)">
-                  <option value="spl">🛡️ Smartlink Protection Life</option>
-                  <option value="acp">🏥 Allianz Critical Plus</option>
-                  <option value="cih">🏥 Allisya CI Hasanah</option>
-                </select>
+                <select class="prod-sel"></select>
               </div>
-              <div class="opt-fields" id="std-fields1"></div>
+              <div class="opt-fields"></div>
             </div>
-
-            <!-- STD OPT 2 -->
-            <div class="opt-col">
-              <div class="opt-hd c2">
-                <div class="opt-num">2</div>
-                <div class="opt-title">Opsi 2</div>
-              </div>
-              <div class="prod-sel-wrap">
-                <select class="prod-sel" id="std-type2" onchange="renderStdFields(2)">
-                  <option value="spl">🛡️ Smartlink Protection Life</option>
-                  <option value="acp">🏥 Allianz Critical Plus</option>
-                  <option value="cih">🏥 Allisya CI Hasanah</option>
-                </select>
-              </div>
-              <div class="opt-fields" id="std-fields2"></div>
-            </div>
-
-            <!-- STD OPT 3 -->
-            <div class="opt-col">
-              <div class="opt-hd c3">
-                <div class="opt-num">3</div>
-                <div class="opt-title">Opsi 3</div>
-              </div>
-              <div class="prod-sel-wrap">
-                <select class="prod-sel" id="std-type3" onchange="renderStdFields(3)">
-                  <option value="spl">🛡️ Smartlink Protection Life</option>
-                  <option value="acp">🏥 Allianz Critical Plus</option>
-                  <option value="cih">🏥 Allisya CI Hasanah</option>
-                </select>
-              </div>
-              <div class="opt-fields" id="std-fields3"></div>
-            </div>
-
-          </div>
+          </template>
           <div class="btn-row">
             <button class="btn-gen" onclick="generateStd()">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"

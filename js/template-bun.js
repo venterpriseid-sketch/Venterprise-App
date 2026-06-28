@@ -13,6 +13,43 @@ let _bunData = null;
 
 const bunColors = ['c1', 'c2', 'c3'];
 
+// ── Generate standard options from template (previously inline in index.html)
+(function initStdOptionsFromTemplate() {
+  const tpl = document.getElementById('std-opt-template');
+  const container = document.getElementById('std-opts-grid');
+  if (!tpl || !container) return;
+
+  const optsList = [
+    { v: 'spl', t: '🛡️ Smartlink Protection Life' },
+    { v: 'acp', t: '🏥 Allianz Critical Plus' },
+    { v: 'cih', t: '🏥 Allisya CI Hasanah' }
+  ];
+
+  for (let i = 1; i <= 3; i++) {
+    const node = tpl.content.cloneNode(true);
+    const col = node.querySelector('.opt-col');
+    const hd = col.querySelector('.opt-hd');
+    hd.classList.add('c' + i);
+    hd.querySelector('.opt-num').textContent = i;
+    hd.querySelector('.opt-title').textContent = 'Opsi ' + i;
+
+    const select = col.querySelector('select');
+    select.id = 'std-type' + i;
+    select.addEventListener('change', () => renderStdFields(i));
+    optsList.forEach(o => {
+      const opt = document.createElement('option');
+      opt.value = o.v;
+      opt.textContent = o.t;
+      select.appendChild(opt);
+    });
+
+    const fields = col.querySelector('.opt-fields');
+    fields.id = 'std-fields' + i;
+
+    container.appendChild(node);
+  }
+})();
+
 // ── Value persistence across re-renders ──────────────────────────
 
 function saveBunValues() {
