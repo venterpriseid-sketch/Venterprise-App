@@ -1,7 +1,7 @@
 // ════════════════════════════════════
 // SERVICE WORKER — offline cache + auto-update
 // ════════════════════════════════════
-const CACHE_NAME = 'venterprise-v4.40';
+const CACHE_NAME = 'venterprise-v4.42';
 
 const PRECACHE = [
   './',
