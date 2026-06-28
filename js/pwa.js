@@ -9,7 +9,7 @@ async function checkUpdate(v) {
 
   // If we're offline, just notify
   if (!navigator.onLine) {
-    showToast('📵 Tidak ada koneksi — cek update saat online.', 'warn');
+    showToast('📵 Tidak ada koneksi — Cek update saat Online.', 'warn');
     return;
   }
 
@@ -89,12 +89,23 @@ function showToast(msg, type = 'ok') {
   if (!toast) {
     toast = document.createElement('div');
     toast.id = 've-toast';
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
     document.body.appendChild(toast);
   }
+
   toast.textContent = msg;
-  toast.className   = 've-toast show toast-' + type;
+  toast.className = 've-toast toast-' + type;
+  toast.classList.remove('show');
   clearTimeout(toast._t);
-  toast._t = setTimeout(() => { toast.className = 've-toast'; }, 3000);
+
+  requestAnimationFrame(() => {
+    toast.classList.add('show');
+  });
+
+  toast._t = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3000);
 }
 
 // ── Update available banner ───────────────────────────────────────

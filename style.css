@@ -1033,22 +1033,40 @@ body {
    ════════════════════════════════════ */
 .ve-toast {
     position: fixed;
-    bottom: -80px;
     left: 50%;
-    transform: translateX(-50%);
+    bottom: 20px;
+    transform: translateX(-50%) translateY(20px);
+    -webkit-transform: translateX(-50%) translateY(20px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    max-width: min(92vw, 520px);
+    width: fit-content;
     background: #1a2a4a;
     color: #fff;
     padding: 10px 20px;
     border-radius: 24px;
     font-size: 13px;
     font-weight: 500;
+    line-height: 1.4;
     z-index: 9999;
-    transition: bottom .3s ease;
-    white-space: nowrap;
-    box-shadow: 0 4px 20px rgba(0,0,0,.3)
+    transition: opacity .25s ease, transform .25s ease, visibility .25s ease;
+    white-space: normal;
+    box-shadow: 0 4px 20px rgba(0,0,0,.3);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden
 }
 
-.ve-toast.show   { bottom: 28px }
+.ve-toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    -webkit-transform: translateX(-50%) translateY(0)
+}
+
 .ve-toast.toast-ok  { background: #1a6e47 }
 .ve-toast.toast-warn { background: #7a5c00 }
 .ve-toast.toast-err { background: #7a0014 }
