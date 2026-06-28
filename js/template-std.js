@@ -76,10 +76,10 @@ function generateStd() {
 }
 
 // ── Init: clone standard option template into the DOM (was previously inline)
-(function initStdOptionsFromTemplate() {
+function initStdOptionsFromTemplate() {
   const tpl = document.getElementById('std-opt-template');
   const container = document.getElementById('std-opts-grid');
-  if (!tpl || !container) return;
+  if (!tpl || !container) return false;
 
   const optsList = [
     { v: 'spl', t: '🛡️ Smartlink Protection Life' },
@@ -110,4 +110,10 @@ function generateStd() {
 
     container.appendChild(node);
   }
-})();
+  return true;
+}
+
+// Ensure init runs after DOM is ready; try immediate first for performance
+if (!initStdOptionsFromTemplate()) {
+  document.addEventListener('DOMContentLoaded', () => { initStdOptionsFromTemplate(); });
+}
