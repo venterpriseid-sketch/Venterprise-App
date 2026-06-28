@@ -988,3 +988,99 @@ body {
     background: var(--gold-bg);
     color: #7a5c00
 }
+
+/* ════════════════════════════════════
+   TOPBAR RIGHT — flex group
+   ════════════════════════════════════ */
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px
+}
+
+/* ════════════════════════════════════
+   NETWORK STATUS DOT
+   ════════════════════════════════════ */
+.net-status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: default;
+    user-select: none
+}
+
+.net-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: background .3s
+}
+
+.net-dot.online  { background: #2ecc71; box-shadow: 0 0 0 2px rgba(46,204,113,.25) }
+.net-dot.offline { background: #e74c3c; box-shadow: 0 0 0 2px rgba(231,76,60,.25)  }
+
+.net-lbl {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.6)
+}
+
+/* ════════════════════════════════════
+   TOAST NOTIFICATION
+   ════════════════════════════════════ */
+.ve-toast {
+    position: fixed;
+    bottom: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a2a4a;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 500;
+    z-index: 9999;
+    transition: bottom .3s ease;
+    white-space: nowrap;
+    box-shadow: 0 4px 20px rgba(0,0,0,.3)
+}
+
+.ve-toast.show   { bottom: 28px }
+.ve-toast.toast-ok  { background: #1a6e47 }
+.ve-toast.toast-warn { background: #7a5c00 }
+.ve-toast.toast-err { background: #7a0014 }
+
+/* ════════════════════════════════════
+   UPDATE BANNER
+   ════════════════════════════════════ */
+#ve-update-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(90deg, #003781, #005BAC);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 10px 20px;
+    z-index: 9998;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 2px 16px rgba(0,0,0,.25)
+}
+
+#ve-update-banner button:first-of-type {
+    background: #fff;
+    color: var(--blue);
+    border: none;
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer
+}

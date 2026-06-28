@@ -2,264 +2,285 @@
 <html lang="id">
 
 <head>
-    <meta charset="UTF-8" />
-    <link rel="apple-touch-icon" sizes="1024x1024" href="./icon-1024x1024.png">
-    <link rel="manifest" href="./manifest.json">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta name="apple-mobile-web-app-title" content="Venterprise APP" />
-    <title>Proposal Tool</title>
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Venterprise APP" />
+  <meta name="theme-color" content="#003781" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="apple-touch-icon" sizes="1024x1024" href="./icon-1024x1024.png" />
+
+  <title>Proposal Tool</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-    <nav class="topbar">
-        <div class="tl">
-            <div class="lbox">A</div>
-            <div>
-                <div class="ttl">Allianz Life Insurance</div>
-                <div class="tsub">Rangkuman Ilustrasi</div>
-            </div>
-        </div>
-        <div class="tbadge" onclick="checkUpdate(4.31)">
-            Patch v4.31
-        </div>
-    </nav>
+  <!-- ═══ TOP BAR ═══ -->
+  <nav class="topbar">
+    <div class="tl">
+      <div class="lbox">A</div>
+      <div>
+        <div class="ttl">Allianz Life Insurance</div>
+        <div class="tsub">Rangkuman Ilustrasi</div>
+      </div>
+    </div>
 
-    <div class="page">
-    
-        <!-- ═══ TEMPLATE TABS ═══ -->
-        <div class="prod-tabs">
-            <div class="ptab active" onclick="switchTemplate('std',this)">
-                <div class="ptab-ico">📋</div>
-                <div class="ptab-lbl">Standard Template</div>
-                <div class="ptab-sub">1 Produk per Opsi</div>
-            </div>
-            <div class="ptab" onclick="switchTemplate('bun',this)">
-                <div class="ptab-ico">📦</div>
-                <div class="ptab-lbl">Bundling Template (ON GOING)</div>
-                <div class="ptab-sub">Multi Produk per Opsi</div>
-            </div>
+    <div class="topbar-right">
+      <!-- Online / Offline dot — sits next to patch badge -->
+      <div class="net-status" title="Status koneksi">
+        <span class="net-dot online" id="net-dot"></span>
+        <span class="net-lbl" id="net-lbl">Online</span>
+      </div>
+
+      <div class="tbadge" onclick="checkUpdate(4.31)">
+        Patch v4.31
+      </div>
+    </div>
+  </nav>
+
+  <div class="page">
+
+    <!-- ═══ TEMPLATE TABS ═══ -->
+    <div class="prod-tabs">
+      <div class="ptab active" onclick="switchTemplate('std',this)">
+        <div class="ptab-ico">📋</div>
+        <div class="ptab-lbl">Standard Template</div>
+        <div class="ptab-sub">1 Produk per Opsi</div>
+      </div>
+      <div class="ptab" onclick="switchTemplate('bun',this)">
+        <div class="ptab-ico">📦</div>
+        <div class="ptab-lbl">Bundling Template (ON GOING)</div>
+        <div class="ptab-sub">Multi Produk per Opsi</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- PANEL: STANDARD TEMPLATE                   -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="prod-panel active" id="panel-std">
+      <div class="input-section">
+        <div class="sec-hd">
+          <div class="sec-ico">📋</div>
+          <div class="sec-lbl">Standard Template — Input Opsi
+            <small>PILIH PRODUK LALU ISI DETAIL SETIAP OPSI</small>
+          </div>
         </div>
-    
-        <!-- ══════════════════════════════════════════ -->
-        <!-- PANEL: STANDARD TEMPLATE                   -->
-        <!-- ══════════════════════════════════════════ -->
-        <div class="prod-panel active" id="panel-std">
-            <div class="input-section">
-                <div class="sec-hd">
-                    <div class="sec-ico">📋</div>
-                    <div class="sec-lbl">Standard Template — Input Opsi<small>PILIH PRODUK LALU ISI DETAIL SETIAP
-                            OPSI</small></div>
-                </div>
-                <div class="card">
-                    <div class="opts-grid">
-    
-                        <!-- STD OPT 1 -->
-                        <div class="opt-col">
-                            <div class="opt-hd c1">
-                                <div class="opt-num">1</div>
-                                <div class="opt-title">Opsi 1</div>
-                            </div>
-                            <div class="prod-sel-wrap">
-                                <select class="prod-sel" id="std-type1" onchange="renderStdFields(1)">
-                                    <option value="spl">🛡️ Smartlink Protection Life</option>
-                                    <option value="acp">🏥 Allianz Critical Plus</option>
-                                    <option value="cih">🏥 Allisya CI Hasanah</option>
-                                </select>
-                            </div>
-                            <div class="opt-fields" id="std-fields1"></div>
-                        </div>
-    
-                        <!-- STD OPT 2 -->
-                        <div class="opt-col">
-                            <div class="opt-hd c2">
-                                <div class="opt-num">2</div>
-                                <div class="opt-title">Opsi 2</div>
-                            </div>
-                            <div class="prod-sel-wrap">
-                                <select class="prod-sel" id="std-type2" onchange="renderStdFields(2)">
-                                    <option value="spl">🛡️ Smartlink Protection Life</option>
-                                    <option value="acp">🏥 Allianz Critical Plus</option>
-                                    <option value="cih">🏥 Allisya CI Hasanah</option>
-                                </select>
-                            </div>
-                            <div class="opt-fields" id="std-fields2"></div>
-                        </div>
-    
-                        <!-- STD OPT 3 -->
-                        <div class="opt-col">
-                            <div class="opt-hd c3">
-                                <div class="opt-num">3</div>
-                                <div class="opt-title">Opsi 3</div>
-                            </div>
-                            <div class="prod-sel-wrap">
-                                <select class="prod-sel" id="std-type3" onchange="renderStdFields(3)">
-                                    <option value="spl">🛡️ Smartlink Protection Life</option>
-                                    <option value="acp">🏥 Allianz Critical Plus</option>
-                                    <option value="cih">🏥 Allisya CI Hasanah</option>
-                                </select>
-                            </div>
-                            <div class="opt-fields" id="std-fields3"></div>
-                        </div>
-    
-                    </div>
-                    <div class="btn-row">
-                        <button class="btn-gen" onclick="generateStd()">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polyline>
-                            </svg>
-                            Buat Perbandingan
-                        </button>
-                    </div>
-                </div>
+        <div class="card">
+          <div class="opts-grid">
+
+            <!-- STD OPT 1 -->
+            <div class="opt-col">
+              <div class="opt-hd c1">
+                <div class="opt-num">1</div>
+                <div class="opt-title">Opsi 1</div>
+              </div>
+              <div class="prod-sel-wrap">
+                <select class="prod-sel" id="std-type1" onchange="renderStdFields(1)">
+                  <option value="spl">🛡️ Smartlink Protection Life</option>
+                  <option value="acp">🏥 Allianz Critical Plus</option>
+                  <option value="cih">🏥 Allisya CI Hasanah</option>
+                </select>
+              </div>
+              <div class="opt-fields" id="std-fields1"></div>
             </div>
-    
-            <div class="divider" id="std-divider"></div>
-            <div class="result-area" id="std-result">
-                <div class="sec-hd fade">
-                    <div class="sec-ico">📊</div>
-                    <div class="sec-lbl">Hasil Perbandingan<small>SIAP SCREENSHOT ATAU CETAK</small></div>
-                </div>
-                <div class="res-card fade d1">
-                    <div class="res-hd">
-                        <div class="res-logo-row">
-                            <div class="res-logo-box">A</div>
-                            <div class="res-logo-txt">Allianz — Proposal Perbandingan</div>
-                        </div>
-                        <div class="res-title" id="std-res-title">Perbandingan Proteksi</div>
-                        <div class="res-sub" id="std-res-sub">—</div>
-                    </div>
-                    <div class="vpills fade d2" id="std-vpills"></div>
-                    <div class="tbl-wrap fade d3">
-                        <table class="ctbl">
-                            <thead>
-                                <tr id="std-thead">
-                                    <th>Manfaat</th>
-                                    <th>Opsi 1</th>
-                                    <th>Opsi 2</th>
-                                    <th>Opsi 3</th>
-                                </tr>
-                            </thead>
-                            <tbody id="std-tbody"></tbody>
-                        </table>
-                    </div>
-                    <div class="res-ft">
-                        <div class="ft-disc">Perbandingan ini disiapkan oleh agen Allianz Anda. Detail manfaat mengacu pada
-                            kontrak polis yang berlaku.</div>
-                        <div class="ft-date" id="std-ft-date">—</div>
-                    </div>
-                </div>
-                <div class="act-btns">
-                    <button class="btn-act btn-reset" onclick="resetResult('std')">↩ Edit</button>
-                    <button class="btn-act btn-print" onclick="window.print()">🖨️ Cetak</button>
-                    <button class="btn-act btn-pdf" onclick="unduhPDF('Standard')">📄 Unduh PDF</button>
-                </div>
+
+            <!-- STD OPT 2 -->
+            <div class="opt-col">
+              <div class="opt-hd c2">
+                <div class="opt-num">2</div>
+                <div class="opt-title">Opsi 2</div>
+              </div>
+              <div class="prod-sel-wrap">
+                <select class="prod-sel" id="std-type2" onchange="renderStdFields(2)">
+                  <option value="spl">🛡️ Smartlink Protection Life</option>
+                  <option value="acp">🏥 Allianz Critical Plus</option>
+                  <option value="cih">🏥 Allisya CI Hasanah</option>
+                </select>
+              </div>
+              <div class="opt-fields" id="std-fields2"></div>
             </div>
+
+            <!-- STD OPT 3 -->
+            <div class="opt-col">
+              <div class="opt-hd c3">
+                <div class="opt-num">3</div>
+                <div class="opt-title">Opsi 3</div>
+              </div>
+              <div class="prod-sel-wrap">
+                <select class="prod-sel" id="std-type3" onchange="renderStdFields(3)">
+                  <option value="spl">🛡️ Smartlink Protection Life</option>
+                  <option value="acp">🏥 Allianz Critical Plus</option>
+                  <option value="cih">🏥 Allisya CI Hasanah</option>
+                </select>
+              </div>
+              <div class="opt-fields" id="std-fields3"></div>
+            </div>
+
+          </div>
+          <div class="btn-row">
+            <button class="btn-gen" onclick="generateStd()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polyline>
+              </svg>
+              Buat Perbandingan
+            </button>
+          </div>
         </div>
-    
-        <div class="prod-panel" id="panel-bunSOON">ON-GOING</div>
-        <!-- ══════════════════════════════════════════ -->
-        <!-- PANEL: BUNDLING TEMPLATE                   -->
-        <!-- ══════════════════════════════════════════ -->
-        <div class="prod-panel" id="panel-bun">
-            <div class="input-section">
-                <div class="sec-hd">
-                    <div class="sec-ico">📦</div>
-                    <div class="sec-lbl">Bundling Template — Input Opsi<small>TIAP OPSI BISA GABUNG LEBIH DARI 1
-                            PRODUK</small></div>
-                </div>
-                <div class="card">
-                    <div class="opts-grid" id="bun-grid"></div>
-                    <div class="btn-row">
-                        <button class="btn-gen" onclick="generateBun()">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polyline>
-                            </svg>
-                            Buat Perbandingan
-                        </button>
-                    </div>
-                </div>
-            </div>
-    
-            <div class="divider" id="bun-divider"></div>
-            <div class="result-area" id="bun-result">
-                <div class="sec-hd fade">
-                    <div class="sec-ico">📊</div>
-                    <div class="sec-lbl">Hasil Bundling<small>SIAP SCREENSHOT ATAU CETAK</small></div>
-                </div>
-                <div class="res-card fade d1">
-                    <div class="res-hd" style="background:linear-gradient(135deg,#1a2a4a 0%,#003781 55%,#C9A84C 100%)">
-                        <div class="res-logo-row">
-                            <div class="res-logo-box">A</div>
-                            <div class="res-logo-txt">Allianz — Paket Bundling</div>
-                        </div>
-                        <div class="res-title">Perbandingan Paket<br>Proteksi Kombinasi</div>
-                        <div class="res-sub" id="bun-res-sub">—</div>
-                    </div>
-                    <div class="vpills fade d2">
-                        <div class="vpill">
-                            <div class="vpill-ico">📦</div>
-                            <div>
-                                <div class="vpill-lbl">Perlindungan Lengkap</div>
-                                <div class="vpill-txt">Multi produk dalam 1 paket, semua risiko hidup tertanggung.</div>
-                            </div>
-                        </div>
-                        <div class="vpill">
-                            <div class="vpill-ico">💡</div>
-                            <div>
-                                <div class="vpill-lbl">Nilai Lebih Efisien</div>
-                                <div class="vpill-txt">Bundling memberikan manfaat lebih dengan investasi yang terencana.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="vpill">
-                            <div class="vpill-ico">🤝</div>
-                            <div>
-                                <div class="vpill-lbl">Fleksibel</div>
-                                <div class="vpill-txt">Pilih kombinasi sesuai kebutuhan dan kemampuan finansial.</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tbl-wrap fade d3">
-                        <label class="merge-bar">
-                            <input type="checkbox" id="bun-merge" onchange="rerenderBunTable()" />
-                            <span class="merge-bar-lbl">⚡ Enable Merge — Gabungkan manfaat sejenis antar produk dalam 1
-                                opsi</span>
-                            <span class="merge-bar-sub">Nonaktif = pisah baris per produk</span>
-                        </label>
-                        <table class="ctbl">
-                            <thead>
-                                <tr id="bun-thead">
-                                    <th>Manfaat</th>
-                                </tr>
-                            </thead>
-                            <tbody id="bun-tbody"></tbody>
-                        </table>
-                    </div>
-                    <div class="res-ft">
-                        <div class="ft-disc">Perbandingan ini disiapkan oleh agen Allianz Anda. Detail manfaat mengacu pada
-                            kontrak polis yang berlaku.</div>
-                        <div class="ft-date" id="bun-ft-date">—</div>
-                    </div>
-                </div>
-                <div class="act-btns">
-                    <button class="btn-act btn-reset" onclick="resetResult('bun')">↩ Edit</button>
-                    <button class="btn-act btn-print" onclick="window.print()">🖨️ Cetak</button>
-                    <button class="btn-act btn-pdf" onclick="unduhPDF('Bundling')">📄 Unduh PDF</button>
-                </div>
-            </div>
+      </div>
+
+      <div class="divider" id="std-divider"></div>
+      <div class="result-area" id="std-result">
+        <div class="sec-hd fade">
+          <div class="sec-ico">📊</div>
+          <div class="sec-lbl">Hasil Perbandingan<small>SIAP SCREENSHOT ATAU CETAK</small></div>
         </div>
-    
-    </div><!-- /page -->
-    <script src="script.js"></script>
+        <div class="res-card fade d1">
+          <div class="res-hd">
+            <div class="res-logo-row">
+              <div class="res-logo-box">A</div>
+              <div class="res-logo-txt">Allianz — Proposal Perbandingan</div>
+            </div>
+            <div class="res-title" id="std-res-title">Perbandingan Proteksi</div>
+            <div class="res-sub" id="std-res-sub">—</div>
+          </div>
+          <div class="vpills fade d2" id="std-vpills"></div>
+          <div class="tbl-wrap fade d3">
+            <table class="ctbl">
+              <thead>
+                <tr id="std-thead">
+                  <th>Manfaat</th>
+                  <th>Opsi 1</th>
+                  <th>Opsi 2</th>
+                  <th>Opsi 3</th>
+                </tr>
+              </thead>
+              <tbody id="std-tbody"></tbody>
+            </table>
+          </div>
+          <div class="res-ft">
+            <div class="ft-disc">Perbandingan ini disiapkan oleh agen Allianz Anda. Detail manfaat mengacu pada
+              kontrak polis yang berlaku.</div>
+            <div class="ft-date" id="std-ft-date">—</div>
+          </div>
+        </div>
+        <div class="act-btns">
+          <button class="btn-act btn-reset" onclick="resetResult('std')">↩ Edit</button>
+          <button class="btn-act btn-print" onclick="window.print()">🖨️ Cetak</button>
+          <button class="btn-act btn-pdf" onclick="unduhPDF('Standard')">📄 Unduh PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-panel" id="panel-bunSOON">ON-GOING</div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- PANEL: BUNDLING TEMPLATE                   -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="prod-panel" id="panel-bun">
+      <div class="input-section">
+        <div class="sec-hd">
+          <div class="sec-ico">📦</div>
+          <div class="sec-lbl">Bundling Template — Input Opsi
+            <small>TIAP OPSI BISA GABUNG LEBIH DARI 1 PRODUK</small>
+          </div>
+        </div>
+        <div class="card">
+          <div class="opts-grid" id="bun-grid"></div>
+          <div class="btn-row">
+            <button class="btn-gen" onclick="generateBun()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polyline>
+              </svg>
+              Buat Perbandingan
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider" id="bun-divider"></div>
+      <div class="result-area" id="bun-result">
+        <div class="sec-hd fade">
+          <div class="sec-ico">📊</div>
+          <div class="sec-lbl">Hasil Bundling<small>SIAP SCREENSHOT ATAU CETAK</small></div>
+        </div>
+        <div class="res-card fade d1">
+          <div class="res-hd" style="background:linear-gradient(135deg,#1a2a4a 0%,#003781 55%,#C9A84C 100%)">
+            <div class="res-logo-row">
+              <div class="res-logo-box">A</div>
+              <div class="res-logo-txt">Allianz — Paket Bundling</div>
+            </div>
+            <div class="res-title">Perbandingan Paket<br>Proteksi Kombinasi</div>
+            <div class="res-sub" id="bun-res-sub">—</div>
+          </div>
+          <div class="vpills fade d2">
+            <div class="vpill">
+              <div class="vpill-ico">📦</div>
+              <div>
+                <div class="vpill-lbl">Perlindungan Lengkap</div>
+                <div class="vpill-txt">Multi produk dalam 1 paket, semua risiko hidup tertanggung.</div>
+              </div>
+            </div>
+            <div class="vpill">
+              <div class="vpill-ico">💡</div>
+              <div>
+                <div class="vpill-lbl">Nilai Lebih Efisien</div>
+                <div class="vpill-txt">Bundling memberikan manfaat lebih dengan investasi yang terencana.</div>
+              </div>
+            </div>
+            <div class="vpill">
+              <div class="vpill-ico">🤝</div>
+              <div>
+                <div class="vpill-lbl">Fleksibel</div>
+                <div class="vpill-txt">Pilih kombinasi sesuai kebutuhan dan kemampuan finansial.</div>
+              </div>
+            </div>
+          </div>
+          <div class="tbl-wrap fade d3">
+            <label class="merge-bar">
+              <input type="checkbox" id="bun-merge" onchange="rerenderBunTable()" />
+              <span class="merge-bar-lbl">⚡ Enable Merge — Gabungkan manfaat sejenis antar produk dalam 1 opsi</span>
+              <span class="merge-bar-sub">Nonaktif = pisah baris per produk</span>
+            </label>
+            <table class="ctbl">
+              <thead>
+                <tr id="bun-thead">
+                  <th>Manfaat</th>
+                </tr>
+              </thead>
+              <tbody id="bun-tbody"></tbody>
+            </table>
+          </div>
+          <div class="res-ft">
+            <div class="ft-disc">Perbandingan ini disiapkan oleh agen Allianz Anda. Detail manfaat mengacu pada
+              kontrak polis yang berlaku.</div>
+            <div class="ft-date" id="bun-ft-date">—</div>
+          </div>
+        </div>
+        <div class="act-btns">
+          <button class="btn-act btn-reset" onclick="resetResult('bun')">↩ Edit</button>
+          <button class="btn-act btn-print" onclick="window.print()">🖨️ Cetak</button>
+          <button class="btn-act btn-pdf" onclick="unduhPDF('Bundling')">📄 Unduh PDF</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page -->
+
+  <!-- ═══ SCRIPTS (load order matters) ═══ -->
+  <script src="./js/utils.js"></script>
+  <script src="./js/ui.js"></script>
+  <script src="./js/fields.js"></script>
+  <script src="./js/data.js"></script>
+  <script src="./js/template-std.js"></script>
+  <script src="./js/template-bun.js"></script>
+  <script src="./js/pwa.js"></script>
+  <script src="./js/app.js"></script>
+
 </body>
-
 </html>
