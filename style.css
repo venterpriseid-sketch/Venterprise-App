@@ -1036,15 +1036,22 @@ body {
     transition: background .3s
 }
 
-.net-dot.online  { background: #2ecc71; box-shadow: 0 0 0 2px rgba(46,204,113,.25) }
-.net-dot.offline { background: #e74c3c; box-shadow: 0 0 0 2px rgba(231,76,60,.25)  }
+.net-dot.online {
+    background: #2ecc71;
+    box-shadow: 0 0 0 2px rgba(46, 204, 113, .25)
+}
+
+.net-dot.offline {
+    background: #e74c3c;
+    box-shadow: 0 0 0 2px rgba(231, 76, 60, .25)
+}
 
 .net-lbl {
     font-size: 10px;
     font-weight: 600;
     letter-spacing: .5px;
     text-transform: uppercase;
-    color: rgba(255,255,255,.6)
+    color: rgba(255, 255, 255, .6)
 }
 
 /* ════════════════════════════════════
@@ -1074,7 +1081,7 @@ body {
     z-index: 9999;
     transition: opacity .25s ease, transform .25s ease, visibility .25s ease;
     white-space: normal;
-    box-shadow: 0 4px 20px rgba(0,0,0,.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, .3);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden
 }
@@ -1086,9 +1093,17 @@ body {
     -webkit-transform: translateX(-50%) translateY(0)
 }
 
-.ve-toast.toast-ok  { background: #1a6e47 }
-.ve-toast.toast-warn { background: #7a5c00 }
-.ve-toast.toast-err { background: #7a0014 }
+.ve-toast.toast-ok {
+    background: #1a6e47
+}
+
+.ve-toast.toast-warn {
+    background: #7a5c00
+}
+
+.ve-toast.toast-err {
+    background: #7a0014
+}
 
 /* ════════════════════════════════════
    UPDATE BANNER
@@ -1108,7 +1123,7 @@ body {
     z-index: 9998;
     font-size: 13px;
     font-weight: 500;
-    box-shadow: 0 2px 16px rgba(0,0,0,.25)
+    box-shadow: 0 2px 16px rgba(0, 0, 0, .25)
 }
 
 #ve-update-banner button:first-of-type {
@@ -1120,4 +1135,80 @@ body {
     font-size: 12px;
     font-weight: 700;
     cursor: pointer
+}
+
+/* ── ENABLE EDIT ON RESULT toggle ─────────────────────────────── */
+.edit-toggle-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.edit-toggle-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1.5px dashed var(--border);
+    background: var(--bg2);
+    transition: border-color .2s, background .2s;
+}
+
+.edit-toggle-label:has(input:checked) {
+    border-color: var(--blue-mid);
+    background: rgba(0, 91, 172, .06);
+}
+
+.edit-toggle-label input[type=checkbox] {
+    display: none;
+}
+
+.edit-toggle-track {
+    position: relative;
+    width: 36px;
+    height: 20px;
+    background: var(--border);
+    border-radius: 10px;
+    transition: background .2s;
+    flex-shrink: 0;
+}
+
+.edit-toggle-label:has(input:checked) .edit-toggle-track {
+    background: var(--blue-mid);
+}
+
+.edit-toggle-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform .2s;
+}
+
+.edit-toggle-label:has(input:checked) .edit-toggle-thumb {
+    transform: translateX(16px);
+}
+
+.edit-toggle-txt {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    color: var(--text2);
+    text-transform: uppercase;
+}
+
+.edit-toggle-label:has(input:checked) .edit-toggle-txt {
+    color: var(--blue-mid);
+}
+
+@media print {
+    .edit-toggle-row {
+        display: none !important;
+    }
 }

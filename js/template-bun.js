@@ -44,7 +44,7 @@ function restoreBunValues(saved) {
 
 function renderBunGrid() {
   const saved = saveBunValues();
-  const grid  = g('bun-grid');
+  const grid = g('bun-grid');
   grid.innerHTML = '';
 
   bunState.forEach((opt, oi) => {
@@ -65,9 +65,9 @@ function renderBunGrid() {
           <div class="prod-block-hd">
             <span class="prod-block-label">
               <select class="prod-block-type" onchange="changeBunProdType(${oi},${pi},this.value)">
-                <option value="spl"${prod.type === 'spl'    ? ' selected' : ''}>🛡️ SPL</option>
-                <option value="acp"${prod.type === 'acp'    ? ' selected' : ''}>🏥 Critical Plus</option>
-                <option value="cih"${prod.type === 'cih'    ? ' selected' : ''}>🏥 CI Hasanah</option>
+                <option value="spl"${prod.type === 'spl' ? ' selected' : ''}>🛡️ SPL</option>
+                <option value="acp"${prod.type === 'acp' ? ' selected' : ''}>🏥 Critical Plus</option>
+                <option value="cih"${prod.type === 'cih' ? ' selected' : ''}>🏥 CI Hasanah</option>
                 <option value="legacy"${prod.type === 'legacy' ? ' selected' : ''}>🏛️ Legacy</option>
               </select>
             </span>
@@ -96,7 +96,7 @@ function changeBunProdType(oi, pi, newType) {
 
 function addBunProd(oi) {
   const opt = bunState[oi];
-  const pi  = opt.prods.length;
+  const pi = opt.prods.length;
   opt.prods.push({ type: 'spl', pfx: `b${opt.idx}p${pi}` });
   renderBunGrid();
 }
@@ -118,7 +118,7 @@ function readBunOptData(opt) {
     if (d && d.premi > 0) products.push(d);
   });
   const totalP = products.reduce((s, p) => s + p.premi, 0);
-  const frek   = products[0]?.frek || '12';
+  const frek = products[0]?.frek || '12';
   return { idx: opt.idx, products, totalP, frek };
 }
 
@@ -134,9 +134,9 @@ function buildBunOptRows(optData, merged) {
   if (!merged) return allRows;
 
   // Accumulate numeric mergeKey fields; keep first occurrence of non-merge rows
-  const seen        = {};
+  const seen = {};
   const merged_rows = [];
-  const mergeAccum  = {};
+  const mergeAccum = {};
 
   allRows.forEach(r => {
     if (r.mergeKey) {
@@ -155,7 +155,7 @@ function buildBunOptRows(optData, merged) {
   });
 
   // Preserve insertion order
-  const order    = [];
+  const order = [];
   const orderSet = new Set();
   allRows.forEach(r => {
     const k = r.mergeKey || r.key;
@@ -165,7 +165,7 @@ function buildBunOptRows(optData, merged) {
   const result = [];
   order.forEach(k => {
     if (mergeAccum[k]) {
-      const m         = mergeAccum[k];
+      const m = mergeAccum[k];
       const badgesHtml = m.badges
         .map(b => `<span class="src-badge src-${b.cls}">${b.txt}</span>`)
         .join('');
@@ -200,7 +200,7 @@ function generateBun() {
 function rerenderBunTable() {
   if (!_bunData) return;
   const merged = chkd('bun-merge');
-  const opts   = _bunData;
+  const opts = _bunData;
 
   // Collect row key order and labels
   const rowMeta = {};

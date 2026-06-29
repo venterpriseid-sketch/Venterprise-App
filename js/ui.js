@@ -40,6 +40,13 @@ function editableResultCell(content, extraClass = '') {
 }
 
 function enableEditableResult(prefix) {
+  // Now controlled by the ENABLE EDIT toggle — only apply if toggle is ON
+  const toggle = document.getElementById(prefix + '-edit-toggle');
+  if (toggle && !toggle.checked) return; // default: not editable
+  _applyEditableResult(prefix);
+}
+
+function _applyEditableResult(prefix) {
   const root = g(prefix + '-result');
   if (!root) return;
 
@@ -56,6 +63,27 @@ function enableEditableResult(prefix) {
     el.setAttribute('spellcheck', 'false');
     el.setAttribute('tabindex', '0');
   });
+}
+
+function _removeEditableResult(prefix) {
+  const root = g(prefix + '-result');
+  if (!root) return;
+
+  root.querySelectorAll('[contenteditable="true"]').forEach(el => {
+    el.classList.remove('editable-text');
+    el.removeAttribute('contenteditable');
+    el.removeAttribute('tabindex');
+  });
+}
+
+function toggleResultEditable(prefix, enabled) {
+  if (enabled) {
+    _applyEditableResult(prefix);
+    showToast('✏️ Edit mode aktif — semua teks hasil bisa diedit.', 'ok');
+  } else {
+    _removeEditableResult(prefix);
+    showToast('🔒 Edit mode dimatikan.', 'warn');
+  }
 }
 
 function unduhPDF(nama) {

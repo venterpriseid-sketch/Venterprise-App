@@ -11,7 +11,7 @@ function renderStdFields(i) {
 function generateStd() {
   const allOpts = [1, 2, 3].map(i => {
     const type = sv('std-type' + i);
-    const d    = readData(type, 'std' + i);
+    const d = readData(type, 'std' + i);
     if (!d || !d.premi) return null;
     return { ...d, idx: i };
   });
@@ -71,9 +71,9 @@ function generateStd() {
     </div></div>`;
 
   g('std-res-title').textContent = 'Perbandingan Opsi Proteksi';
-  g('std-res-sub').textContent   = 'Dibuat pada ' + hariIni();
-  g('std-ft-date').textContent   = hariIni() + ' | Revolve/VE ';
-  g('std-tbody').innerHTML       = html;
+  g('std-res-sub').textContent = 'Dibuat pada ' + hariIni();
+  g('std-ft-date').textContent = hariIni() + ' | Revolve/VE ';
+  g('std-tbody').innerHTML = html;
   attachMoneyInputFormatting(document);
   enableEditableResult('std');
   showResult('std');

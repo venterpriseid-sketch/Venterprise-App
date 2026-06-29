@@ -87,12 +87,19 @@
           </template>
           <div class="btn-row">
             <button class="btn-gen" onclick="generateStd()">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polyline>
               </svg>
               Buat Perbandingan
             </button>
+          </div>
+          <div class="edit-toggle-row">
+            <label class="edit-toggle-label" id="std-edit-toggle-wrap">
+              <input type="checkbox" id="std-edit-toggle" onchange="toggleResultEditable('std', this.checked)" />
+              <span class="edit-toggle-track"><span class="edit-toggle-thumb"></span></span>
+              <span class="edit-toggle-txt">✏️ ENABLE EDIT ON RESULT</span>
+            </label>
           </div>
         </div>
       </div>
@@ -157,12 +164,19 @@
           <div class="opts-grid" id="bun-grid"></div>
           <div class="btn-row">
             <button class="btn-gen" onclick="generateBun()">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polyline>
               </svg>
               Buat Perbandingan
             </button>
+          </div>
+          <div class="edit-toggle-row">
+            <label class="edit-toggle-label" id="bun-edit-toggle-wrap">
+              <input type="checkbox" id="bun-edit-toggle" onchange="toggleResultEditable('bun', this.checked)" />
+              <span class="edit-toggle-track"><span class="edit-toggle-thumb"></span></span>
+              <span class="edit-toggle-txt">✏️ ENABLE EDIT ON RESULT</span>
+            </label>
           </div>
         </div>
       </div>
@@ -247,4 +261,5 @@
   <script src="./js/app.js"></script>
 
 </body>
+
 </html>

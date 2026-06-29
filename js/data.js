@@ -120,8 +120,8 @@ function buildRows(d, badge) {
       val: `<div class="cv">Usia 99 Tahun</div>${b}`
     });
 
-  } 
-  
+  }
+
   else if (d.type === 'acp') {
     const tp = totalPremi(d.premi, d.frek, d.mp);
     const bv = d.up * 0.5;
@@ -161,8 +161,8 @@ function buildRows(d, badge) {
       val: `<div class="cv">20 Tahun</div>${b}`
     });
 
-  } 
-  
+  }
+
   else if (d.type === 'cih') {
     const tp = totalPremi(d.premi, d.frek, d.mp);
     rows.push({
@@ -209,8 +209,8 @@ function buildRows(d, badge) {
       val: `<div class="cv">${d.mk} Tahun</div>${b}`
     });
 
-  } 
-  
+  }
+
   else if (d.type === 'lpu') {
     const tp = totalPremi(d.premi, d.frek, d.mp);
     rows.push({
@@ -242,8 +242,8 @@ function buildRows(d, badge) {
         mergeKey: 'cpg', mergeVal: d.cpg
       });
     }
-  } 
-  
+  }
+
   else if (d.type === 'lpi') {
     const tp = totalPremi(d.premi, d.frek, d.mp);
     rows.push({
