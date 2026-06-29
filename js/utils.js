@@ -5,6 +5,9 @@
 const rp = n =>
   (!n && n !== 0) ? '—' : 'Rp ' + Number(n).toLocaleString('id-ID');
 
+const usd = n =>
+  (!n && n !== 0) ? '—' : '$ ' + Number(n).toLocaleString('en-US');
+
 const g = id => document.getElementById(id);
 
 const nv = id => {
