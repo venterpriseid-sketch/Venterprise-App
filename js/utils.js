@@ -20,16 +20,29 @@ const escapeHtml = value => String(value ?? '')
 function formatMoneyInput(el) {
   if (!el) return;
   const raw = String(el.value || '').replace(/\D/g, '');
-  el.dataset.rawValue = raw || '0';
-  el.value = raw ? parseInt(raw, 10).toLocaleString('id-ID') : '';
+  const digits = raw || '0';
+  el.dataset.rawValue = digits;
+  const formatted = digits !== '0' ? parseInt(digits, 10).toLocaleString('id-ID') : '';
+  if (el.value !== formatted) {
+    el.value = formatted;
+  }
 }
 
 function attachMoneyInputFormatting(root = document) {
+  if (!root || !root.querySelectorAll) return;
   root.querySelectorAll('.money-input').forEach(el => {
     if (el.dataset.moneyBound) return;
     el.dataset.moneyBound = '1';
     const sync = () => formatMoneyInput(el);
-    el.addEventListener('input', sync);
+    ['input', 'keyup', 'paste', 'change', 'blur'].forEach(evt => {
+      el.addEventListener(evt, sync);
+    });
+    el.addEventListener('focus', () => {
+      const raw = String(el.dataset.rawValue || '').replace(/\D/g, '');
+      if (raw && raw !== '0') {
+        el.value = raw;
+      }
+    });
     el.addEventListener('blur', sync);
     sync();
   });

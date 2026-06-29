@@ -29,6 +29,16 @@ function resetResult(prefix) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function editableResultWrap(content, extraClass = '') {
+  const classes = ['editable-text'];
+  if (extraClass) classes.push(extraClass);
+  return `<div class="${classes.join(' ')}" contenteditable="true" spellcheck="false">${content}</div>`;
+}
+
+function editableResultCell(content, extraClass = '') {
+  return `<td class="result-cell">${editableResultWrap(content, extraClass)}</td>`;
+}
+
 function enableEditableResult(prefix) {
   const root = g(prefix + '-result');
   if (!root) return;

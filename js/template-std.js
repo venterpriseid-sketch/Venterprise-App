@@ -39,18 +39,19 @@ function generateStd() {
 
   let html = '';
   Object.entries(rowMeta).forEach(([key, label]) => {
-    html += `<tr><td><div class="row-lbl">${label}</div></td>`;
+    html += `<tr>${editableResultCell(label, 'row-lbl')}`;
     maps.forEach(m => {
-      html += `<td>${m[key] || '<div class="cv" style="color:var(--text3)">—</div>'}</td>`;
+      const val = m[key] || '<div class="cv" style="color:var(--text3)">—</div>';
+      html += editableResultCell(val);
     });
     html += '</tr>';
   });
 
   // Daily penyisihan row
-  html += '<tr class="daily-row"><td><div class="daily-lbl">💡 Penyisihan / Hari</div></td>';
+  html += '<tr class="daily-row">' + editableResultCell('💡 Penyisihan / Hari', 'daily-lbl');
   opts.forEach(o => {
     const pd = perHari(o.premi, o.frek);
-    html += `<td><div class="daily-val">Rp ${pd.toLocaleString('id-ID')}</div><div class="daily-sub">per hari</div></td>`;
+    html += editableResultCell(`<div class="daily-val">Rp ${pd.toLocaleString('id-ID')}</div><div class="daily-sub">per hari</div>`);
   });
   html += '</tr>';
 

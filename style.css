@@ -280,11 +280,17 @@ body {
     transition: border-color .16s, box-shadow .16s
 }
 
+.result-cell {
+    vertical-align: top
+}
+
 .editable-text {
     cursor: text;
     border-radius: 6px;
     padding: 2px 4px;
-    transition: background-color .16s, box-shadow .16s
+    min-height: 100%;
+    transition: background-color .16s, box-shadow .16s;
+    display: block
 }
 
 .editable-text:focus {
