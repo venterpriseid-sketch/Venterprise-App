@@ -1,7 +1,21 @@
 // ════════════════════════════════════
 // SERVICE WORKER — offline cache + auto-update
 // ════════════════════════════════════
-const CACHE_NAME = 'venterprise-v4.42';
+const FALLBACK_VERSION = '0.0';
+
+async function getRuntimeVersion() {
+  try {
+    const res = await fetch('./version.txt?t=' + Date.now(), { cache: 'no-store' });
+    const version = (await res.text()).trim();
+    return version || FALLBACK_VERSION;
+  } catch {
+    return FALLBACK_VERSION;
+  }
+}
+
+async function getCacheName() {
+  return 'venterprise-v' + await getRuntimeVersion();
+}
 
 const PRECACHE = [
   './',
@@ -22,7 +36,7 @@ const PRECACHE = [
 // ── Install: pre-cache all app shell assets ───────────────────────
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE))
+    getCacheName().then(cacheName => caches.open(cacheName).then(cache => cache.addAll(PRECACHE)))
   );
   // Don't call skipWaiting here — we let the page decide when to activate
 });
@@ -30,13 +44,15 @@ self.addEventListener('install', event => {
 // ── Activate: clean up old caches ────────────────────────────────
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys
-          .filter(k => k !== CACHE_NAME)
-          .map(k => caches.delete(k))
-      )
-    ).then(() => self.clients.claim())
+    getCacheName().then(cacheName =>
+      caches.keys().then(keys =>
+        Promise.all(
+          keys
+            .filter(k => k.startsWith('venterprise-v') && k !== cacheName)
+            .map(k => caches.delete(k))
+        )
+      ).then(() => self.clients.claim())
+    )
   );
 });
 
@@ -60,7 +76,7 @@ self.addEventListener('fetch', event => {
         // Cache successful GET responses
         if (response && response.status === 200 && event.request.method === 'GET') {
           const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          getCacheName().then(cacheName => caches.open(cacheName).then(cache => cache.put(event.request, clone)));
         }
         return response;
       }).catch(() => {

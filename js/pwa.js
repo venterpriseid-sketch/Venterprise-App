@@ -4,8 +4,34 @@
 
 // ── Auto-update via Service Worker ───────────────────────────────
 
+async function getAppVersion() {
+  const fallbackVersion = window.APP_VERSION || '0.0';
+
+  try {
+    const res = await fetch('./version.txt?t=' + Date.now(), { cache: 'no-store' });
+    const version = (await res.text()).trim();
+    if (version) {
+      window.APP_VERSION = version;
+      return version;
+    }
+  } catch (err) {
+    console.warn('Gagal membaca versi aplikasi:', err);
+  }
+
+  return fallbackVersion;
+}
+
+async function initVersionBadge() {
+  const badge = document.getElementById('version-badge');
+  if (!badge) return;
+
+  const version = await getAppVersion();
+  badge.textContent = `Patch v${version}`;
+  badge.onclick = () => checkUpdate();
+}
+
 async function checkUpdate(v) {
-  const currentVersion = String(v);
+  const currentVersion = String(v || window.APP_VERSION || await getAppVersion());
 
   // If we're offline, just notify
   if (!navigator.onLine) {
@@ -14,8 +40,7 @@ async function checkUpdate(v) {
   }
 
   try {
-    const res    = await fetch('version.txt?t=' + Date.now(), { cache: 'no-store' });
-    const latest = (await res.text()).trim();
+    const latest = await getAppVersion();
 
     if (latest !== currentVersion) {
       // Tell the SW to skip waiting, then reload
@@ -136,4 +161,7 @@ async function applyUpdate() {
 
 // ── Init ─────────────────────────────────────────────────────────
 
-document.addEventListener('DOMContentLoaded', initNetworkStatus);
+document.addEventListener('DOMContentLoaded', () => {
+  initNetworkStatus();
+  initVersionBadge();
+});
