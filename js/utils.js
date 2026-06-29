@@ -46,11 +46,28 @@ function attachMoneyInputFormatting(root = document) {
   root.querySelectorAll('.money-input').forEach(el => {
     if (el.dataset.moneyBound) return;
     el.dataset.moneyBound = '1';
-    ['input', 'keyup', 'paste', 'change', 'blur'].forEach(evt => {
-      el.addEventListener(evt, () => formatMoneyInput(el));
+
+    // Real-time format while typing — preserve cursor-at-end
+    el.addEventListener('input', () => {
+      const raw = String(el.value).replace(/\D/g, '');
+      el.dataset.rawValue = raw;
+      if (!raw) { el.value = ''; return; }
+      const parsed = parseInt(raw, 10);
+      const formatted = Number.isNaN(parsed) ? '' : parsed.toLocaleString('id-ID');
+      if (el.value !== formatted) {
+        el.value = formatted;
+        // Move cursor to end after reformatting
+        try { el.setSelectionRange(el.value.length, el.value.length); } catch(_) {}
+      }
     });
+
+    // On focus: show raw digits for easy editing
     el.addEventListener('focus', () => formatMoneyInput(el, true));
+    // On blur: reformat
     el.addEventListener('blur', () => formatMoneyInput(el));
+    // Handle paste
+    el.addEventListener('paste', () => setTimeout(() => formatMoneyInput(el), 0));
+
     formatMoneyInput(el);
   });
 }

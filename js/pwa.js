@@ -40,9 +40,16 @@ async function checkUpdate(v) {
   }
 
   try {
-    const latest = await getAppVersion();
+    // Fetch version.txt fresh from server (bypass SW cache)
+    const res = await fetch('./version.txt?t=' + Date.now(), {
+      cache: 'no-store',
+      headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+    });
+    const latest = (await res.text()).trim();
 
-    if (latest !== currentVersion) {
+    if (latest && latest !== currentVersion) {
+      window.APP_VERSION = latest;
+
       // Tell the SW to skip waiting, then reload
       if ('serviceWorker' in navigator) {
         const reg = await navigator.serviceWorker.getRegistration();
@@ -50,11 +57,19 @@ async function checkUpdate(v) {
           reg.waiting.postMessage({ type: 'SKIP_WAITING' });
           return; // reload happens via controllerchange listener below
         }
+        // Force SW to check for updates
+        if (reg) {
+          try { await reg.update(); } catch(_) {}
+          if (reg.waiting) {
+            reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+            return;
+          }
+        }
       }
-      // Fallback hard reload
-      location.href = location.pathname + '?v=' + Date.now();
+      // Fallback: hard reload busting all caches
+      location.href = location.pathname + '?v=' + latest + '&t=' + Date.now();
     } else {
-      showToast('✅ Sudah versi terbaru!', 'ok');
+      showToast('✅ Sudah versi terbaru! (v' + currentVersion + ')', 'ok');
     }
   } catch {
     showToast('❌ Update tidak ditemukan.', 'err');
