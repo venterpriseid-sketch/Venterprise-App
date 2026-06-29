@@ -59,7 +59,7 @@ async function checkUpdate(v) {
         }
         // Force SW to check for updates
         if (reg) {
-          try { await reg.update(); } catch (_) { }
+          try { await reg.update(); } catch(_) {}
           if (reg.waiting) {
             reg.waiting.postMessage({ type: 'SKIP_WAITING' });
             return;

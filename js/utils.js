@@ -57,7 +57,7 @@ function attachMoneyInputFormatting(root = document) {
       if (el.value !== formatted) {
         el.value = formatted;
         // Move cursor to end after reformatting
-        try { el.setSelectionRange(el.value.length, el.value.length); } catch (_) { }
+        try { el.setSelectionRange(el.value.length, el.value.length); } catch(_) {}
       }
     });
 
