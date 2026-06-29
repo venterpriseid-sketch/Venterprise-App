@@ -28,6 +28,62 @@ async function initVersionBadge() {
   const version = await getAppVersion();
   badge.textContent = `Patch v${version}`;
   badge.onclick = () => checkUpdate();
+  await registerServiceWorker(version);
+}
+
+function getServiceWorkerUrl(version = window.APP_VERSION || '0.0') {
+  const safeVersion = String(version).replace(/[^a-zA-Z0-9._-]/g, '') || '0.0';
+  return `./sw.js?v=${safeVersion}`;
+}
+
+async function getActiveRegistration(version = window.APP_VERSION || await getAppVersion()) {
+  if (!('serviceWorker' in navigator)) return null;
+
+  const reg = await navigator.serviceWorker.getRegistration(getServiceWorkerUrl(version));
+  if (reg) return reg;
+  return navigator.serviceWorker.getRegistration();
+}
+
+async function registerServiceWorker(version) {
+  if (!('serviceWorker' in navigator)) return null;
+
+  const swUrl = getServiceWorkerUrl(version);
+
+  try {
+    const reg = await navigator.serviceWorker.register(swUrl);
+
+    if (reg.waiting) {
+      showUpdateBanner();
+    }
+
+    reg.addEventListener('updatefound', () => {
+      const newWorker = reg.installing;
+      if (!newWorker) return;
+
+      newWorker.addEventListener('statechange', () => {
+        if (newWorker.state === 'installed' && (navigator.serviceWorker.controller || reg.waiting)) {
+          showUpdateBanner();
+        }
+      });
+    });
+
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      window.location.reload();
+    });
+
+    try {
+      await reg.update();
+    } catch (_) {}
+
+    if (reg.waiting) {
+      showUpdateBanner();
+    }
+
+    return reg;
+  } catch (err) {
+    console.warn('SW registration failed:', err);
+    return null;
+  }
 }
 
 async function checkUpdate(v) {
@@ -52,20 +108,22 @@ async function checkUpdate(v) {
 
       // Tell the SW to skip waiting, then reload
       if ('serviceWorker' in navigator) {
-        const reg = await navigator.serviceWorker.getRegistration();
+        const reg = await getActiveRegistration(latest);
         if (reg && reg.waiting) {
           reg.waiting.postMessage({ type: 'SKIP_WAITING' });
           return; // reload happens via controllerchange listener below
         }
-        // Force SW to check for updates
+
+        // Force SW to check for updates using the latest versioned URL
         if (reg) {
-          try { await reg.update(); } catch(_) {}
+          try { await reg.update(); } catch (_) {}
           if (reg.waiting) {
             reg.waiting.postMessage({ type: 'SKIP_WAITING' });
             return;
           }
         }
       }
+
       // Fallback: hard reload busting all caches
       location.href = location.pathname + '?v=' + latest + '&t=' + Date.now();
     } else {
@@ -74,34 +132,6 @@ async function checkUpdate(v) {
   } catch {
     showToast('❌ Update tidak ditemukan.', 'err');
   }
-}
-
-// ── Service Worker registration ───────────────────────────────────
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', async () => {
-    try {
-      const reg = await navigator.serviceWorker.register('./sw.js');
-
-      // Detect when a new SW is installed (waiting state)
-      reg.addEventListener('updatefound', () => {
-        const newWorker = reg.installing;
-        newWorker.addEventListener('statechange', () => {
-          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-            // New version available — show a toast with reload button
-            showUpdateBanner();
-          }
-        });
-      });
-
-      // When the controller changes (after SKIP_WAITING), reload
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        window.location.reload();
-      });
-    } catch (err) {
-      console.warn('SW registration failed:', err);
-    }
-  });
 }
 
 // ── Online / Offline indicator ────────────────────────────────────
@@ -165,7 +195,7 @@ function showUpdateBanner() {
 
 async function applyUpdate() {
   if ('serviceWorker' in navigator) {
-    const reg = await navigator.serviceWorker.getRegistration();
+    const reg = await getActiveRegistration();
     if (reg && reg.waiting) {
       reg.waiting.postMessage({ type: 'SKIP_WAITING' });
       return;
