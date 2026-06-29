@@ -280,6 +280,19 @@ body {
     transition: border-color .16s, box-shadow .16s
 }
 
+.editable-text {
+    cursor: text;
+    border-radius: 6px;
+    padding: 2px 4px;
+    transition: background-color .16s, box-shadow .16s
+}
+
+.editable-text:focus {
+    outline: none;
+    background: #fff8dc;
+    box-shadow: 0 0 0 2px rgba(201, 168, 76, .22)
+}
+
 .fld input:focus,
 .fld select:focus {
     border-color: var(--blue-mid);

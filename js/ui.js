@@ -29,6 +29,25 @@ function resetResult(prefix) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function enableEditableResult(prefix) {
+  const root = g(prefix + '-result');
+  if (!root) return;
+
+  const selectors = [
+    '.row-lbl', '.cv', '.csub', '.w-yes', '.cnote',
+    '.daily-val', '.daily-sub', '.vpill-lbl', '.vpill-txt',
+    '.res-title', '.res-sub', '.ft-disc', '.ft-date'
+  ];
+
+  root.querySelectorAll(selectors.join(',')).forEach(el => {
+    if (el.getAttribute('contenteditable') === 'true') return;
+    el.classList.add('editable-text');
+    el.setAttribute('contenteditable', 'true');
+    el.setAttribute('spellcheck', 'false');
+    el.setAttribute('tabindex', '0');
+  });
+}
+
 function unduhPDF(nama) {
   const orig = document.title;
   document.title = 'Allianz — ' + nama;

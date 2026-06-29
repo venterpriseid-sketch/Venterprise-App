@@ -10,10 +10,36 @@ const usd = n =>
 
 const g = id => document.getElementById(id);
 
+const escapeHtml = value => String(value ?? '')
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#39;');
+
+function formatMoneyInput(el) {
+  if (!el) return;
+  const raw = String(el.value || '').replace(/\D/g, '');
+  el.dataset.rawValue = raw || '0';
+  el.value = raw ? parseInt(raw, 10).toLocaleString('id-ID') : '';
+}
+
+function attachMoneyInputFormatting(root = document) {
+  root.querySelectorAll('.money-input').forEach(el => {
+    if (el.dataset.moneyBound) return;
+    el.dataset.moneyBound = '1';
+    const sync = () => formatMoneyInput(el);
+    el.addEventListener('input', sync);
+    el.addEventListener('blur', sync);
+    sync();
+  });
+}
+
 const nv = id => {
   const el = g(id);
   if (!el) return 0;
-  const v = parseFloat(el.value);
+  const raw = el.dataset.rawValue;
+  const v = raw !== undefined ? parseFloat(raw) : parseFloat(String(el.value || '').replace(/\D/g, ''));
   return isNaN(v) ? 0 : v;
 };
 

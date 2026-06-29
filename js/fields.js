@@ -7,7 +7,7 @@ function fieldsSPL(pfx) {
     <div class="fld-row">
       <div class="fld">
         <label>Premi (Rp)</label>
-        <input type="number" id="${pfx}-premi" placeholder="cth. 500000" min="0"/>
+        <input type="text" inputmode="numeric" class="money-input" id="${pfx}-premi" placeholder="cth. 500000" min="0"/>
       </div>
       <div class="fld">
         <label>Frekuensi</label>
@@ -21,19 +21,19 @@ function fieldsSPL(pfx) {
     </div>
     <div class="fld">
       <label>Proteksi Jiwa (Rp)</label>
-      <input type="number" id="${pfx}-jiwa" placeholder="cth. 500000000" min="0"/>
+      <input type="text" inputmode="numeric" class="money-input" id="${pfx}-jiwa" placeholder="cth. 500000000" min="0"/>
     </div>
     <div class="fld">
       <label>Kecelakaan (Rp)</label>
-      <input type="number" id="${pfx}-acc" placeholder="cth. 500000000" min="0"/>
+      <input type="text" inputmode="numeric" class="money-input" id="${pfx}-acc" placeholder="cth. 500000000" min="0"/>
     </div>
     <div class="fld">
       <label>Penyakit Kritis (Rp)</label>
-      <input type="number" id="${pfx}-kritis" placeholder="cth. 250000000" min="0"/>
+      <input type="text" inputmode="numeric" class="money-input" id="${pfx}-kritis" placeholder="cth. 250000000" min="0"/>
     </div>
     <div class="fld">
       <label>Cacat Permanen (Rp)</label>
-      <input type="number" id="${pfx}-tpd" placeholder="cth. 500000000" min="0"/>
+      <input type="text" inputmode="numeric" class="money-input" id="${pfx}-tpd" placeholder="cth. 500000000" min="0"/>
     </div>
     <label class="chk-fld" onclick="toggleChk(this)">
       <input type="checkbox" id="${pfx}-bp"/><span>✦ Bebas Premi</span>
@@ -45,7 +45,7 @@ function fieldsAPL(pfx) {
     <div class="fld-row">
       <div class="fld">
         <label>Premi (Rp)</label>
-        <input type="number" id="${pfx}-premi" placeholder="cth. 500000" min="0"/>
+        <input type="text" inputmode="numeric" class="money-input" id="${pfx}-premi" placeholder="cth. 500000" min="0"/>
       </div>
       <div class="fld">
         <label>Frekuensi</label>
@@ -59,19 +59,19 @@ function fieldsAPL(pfx) {
     </div>
     <div class="fld">
       <label>Proteksi Jiwa (Rp)</label>
-      <input type="number" id="${pfx}-jiwa" placeholder="cth. 500000000" min="0"/>
+      <input type="text" inputmode="numeric" class="money-input" id="${pfx}-jiwa" placeholder="cth. 500000000" min="0"/>
     </div>
     <div class="fld">
       <label>Kecelakaan (Rp)</label>
-      <input type="number" id="${pfx}-acc" placeholder="cth. 500000000" min="0"/>
+      <input type="text" inputmode="numeric" class="money-input" id="${pfx}-acc" placeholder="cth. 500000000" min="0"/>
     </div>
     <div class="fld">
       <label>Penyakit Kritis (Rp)</label>
-      <input type="number" id="${pfx}-kritis" placeholder="cth. 250000000" min="0"/>
+      <input type="text" inputmode="numeric" class="money-input" id="${pfx}-kritis" placeholder="cth. 250000000" min="0"/>
     </div>
     <div class="fld">
       <label>Cacat Permanen (Rp)</label>
-      <input type="number" id="${pfx}-tpd" placeholder="cth. 500000000" min="0"/>
+      <input type="text" inputmode="numeric" class="money-input" id="${pfx}-tpd" placeholder="cth. 500000000" min="0"/>
     </div>
     <label class="chk-fld" onclick="toggleChk(this)">
       <input type="checkbox" id="${pfx}-bp"/><span>✦ Bebas Premi</span>
@@ -83,7 +83,7 @@ function fieldsACP(pfx) {
     <div class="fld-row">
       <div class="fld">
         <label>Premi (Rp)</label>
-        <input type="number" id="${pfx}-premi" placeholder="cth. 500000" min="0"/>
+        <input type="text" inputmode="numeric" class="money-input" id="${pfx}-premi" placeholder="cth. 500000" min="0"/>
       </div>
       <div class="fld">
         <label>Frekuensi</label>
@@ -105,7 +105,7 @@ function fieldsACP(pfx) {
     </div>
     <div class="fld">
       <label>UP Manfaat Kritis (Rp)</label>
-      <input type="number" id="${pfx}-up" placeholder="cth. 500000000" min="0"/>
+      <input type="text" inputmode="numeric" class="money-input" id="${pfx}-up" placeholder="cth. 500000000" min="0"/>
     </div>`;
 }
 
@@ -114,7 +114,7 @@ function fieldsCIH(pfx) {
     <div class="fld-row">
       <div class="fld">
         <label>Premi (Rp)</label>
-        <input type="number" id="${pfx}-premi" placeholder="cth. 500000" min="0"/>
+        <input type="text" inputmode="numeric" class="money-input" id="${pfx}-premi" placeholder="cth. 500000" min="0"/>
       </div>
       <div class="fld">
         <label>Frekuensi</label>
@@ -136,7 +136,7 @@ function fieldsCIH(pfx) {
     </div>
     <div class="fld">
       <label>UP Manfaat Kritis (Rp)</label>
-      <input type="number" id="${pfx}-up" placeholder="cth. 500000000" min="0"/>
+      <input type="text" inputmode="numeric" class="money-input" id="${pfx}-up" placeholder="cth. 500000000" min="0"/>
     </div>
     <div class="fld">
       <label>Masa Kontrak</label>
@@ -169,7 +169,7 @@ function fieldsLPU(pfx) {
     <div class="fld-row">
       <div class="fld">
         <label>Premi ($)</label>
-        <input type="number" id="${pfx}-premi" placeholder="cth. 100" min="0"/>
+        <input type="text" inputmode="numeric" class="money-input" id="${pfx}-premi" placeholder="cth. 100" min="0"/>
       </div>
       <div class="fld">
         <label>Frekuensi</label>
@@ -191,7 +191,7 @@ function fieldsLPU(pfx) {
     </div>
     <div class="fld">
       <label>UP Jiwa ($)</label>
-      <input type="number" id="${pfx}-jiwa" placeholder="cth. 1000" min="0"/>
+      <input type="text" inputmode="numeric" class="money-input" id="${pfx}-jiwa" placeholder="cth. 1000" min="0"/>
     </div>
     <div class="fld">
       <label>Campaign (Text)</label>
@@ -204,7 +204,7 @@ function fieldsLPI(pfx) {
     <div class="fld-row">
       <div class="fld">
         <label>Premi (Rp)</label>
-        <input type="number" id="${pfx}-premi" placeholder="cth. 1000000" min="0"/>
+        <input type="text" inputmode="numeric" class="money-input" id="${pfx}-premi" placeholder="cth. 1000000" min="0"/>
       </div>
       <div class="fld">
         <label>Frekuensi</label>
@@ -226,7 +226,7 @@ function fieldsLPI(pfx) {
     </div>
     <div class="fld">
       <label>UP Jiwa (Rp)</label>
-      <input type="number" id="${pfx}-jiwa" placeholder="cth. 1000000000" min="0"/>
+      <input type="text" inputmode="numeric" class="money-input" id="${pfx}-jiwa" placeholder="cth. 1000000000" min="0"/>
     </div>
     <div class="fld">
       <label>Campaign (Text)</label>
@@ -239,11 +239,11 @@ function fieldsALM(pfx) {
     <div class="fld-row">
       <div class="fld">
         <label>Premi Setelah Diskon (Rp)</label>
-        <input type="number" id="${pfx}-premi" placeholder="cth. 1000000" min="0"/>
+        <input type="text" inputmode="numeric" class="money-input" id="${pfx}-premi" placeholder="cth. 1000000" min="0"/>
       </div>
       <div class="fld">
         <label>Premi Sebelum Diskon (Rp)</label>
-        <input type="number" id="${pfx}-premi2" placeholder="cth. 1000000" min="0"/>
+        <input type="text" inputmode="numeric" class="money-input" id="${pfx}-premi2" placeholder="cth. 1000000" min="0"/>
       </div>
       <div class="fld">
         <label>Frekuensi</label>
@@ -266,7 +266,7 @@ function fieldsALM(pfx) {
     </div>
     <div class="fld">
       <label>UP Jiwa (Rp)</label>
-      <input type="number" id="${pfx}-jiwa" placeholder="cth. 1000000000" min="0"/>
+      <input type="text" inputmode="numeric" class="money-input" id="${pfx}-jiwa" placeholder="cth. 1000000000" min="0"/>
     </div>
     <div class="fld">
       <label>Campaign (Text)</label>
@@ -279,7 +279,7 @@ function fieldsAZP(pfx) {
     <div class="fld-row">
       <div class="fld">
         <label>Premi (Rp)</label>
-        <input type="number" id="${pfx}-premi" placeholder="cth. 1000000" min="0"/>
+        <input type="text" inputmode="numeric" class="money-input" id="${pfx}-premi" placeholder="cth. 1000000" min="0"/>
       </div>
       <div class="fld">
         <label>Frekuensi</label>
@@ -301,7 +301,7 @@ function fieldsAZP(pfx) {
     </div>
     <div class="fld">
       <label>UP Dasar Kritis (Rp)</label>
-      <input type="number" id="${pfx}-up" placeholder="cth. 100000000" min="0"/>
+      <input type="text" inputmode="numeric" class="money-input" id="${pfx}-up" placeholder="cth. 100000000" min="0"/>
     </div>
     <label class="chk-fld" onclick="toggleChk(this)">
       <input type="checkbox" id="${pfx}-pyr"/><span>✦ Payor CI77</span>

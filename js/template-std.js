@@ -5,6 +5,7 @@
 function renderStdFields(i) {
   const type = sv('std-type' + i);
   g('std-fields' + i).innerHTML = getFieldsByType(type, 'std' + i);
+  attachMoneyInputFormatting(g('std-fields' + i));
 }
 
 function generateStd() {
@@ -72,6 +73,8 @@ function generateStd() {
   g('std-res-sub').textContent   = 'Dibuat pada ' + hariIni();
   g('std-ft-date').textContent   = hariIni() + ' | Revolve/VE ';
   g('std-tbody').innerHTML       = html;
+  attachMoneyInputFormatting(document);
+  enableEditableResult('std');
   showResult('std');
 }
 
@@ -89,7 +92,7 @@ function initStdOptionsFromTemplate() {
     { v: 'lpu', t: '🪦 Allianz LegacyPro USD' },
     { v: 'lpi', t: '🪦 Allianz LegacyPro IDR' },
     { v: 'alm', t: '🪦 AlliSya LegacyMax' },
-    { v: 'azp', t: '💰 Allianz Pasti' }
+    { v: 'azp', t: '💰 Allianz Pasti (SOON)' }
   ];
 
   for (let i = 1; i <= 3; i++) {

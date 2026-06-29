@@ -224,7 +224,7 @@ function buildRows(d, badge) {
     });
     rows.push({
       key: 'cpg', label: '💸 Ekstra Nilai UP+',
-      val: `<div class="cv">${usd(d.jiwa * 1.5)}</div><div class="csub">Perlingdungan meningkat sebesar 50% mulai usia 75th+</div>${b}`,
+      val: `<div class="cv">${usd(d.jiwa * 1.5)}</div><div class="csub">Perlindungan meningkat sebesar 50% mulai usia 75th+</div>${b}`,
       mergeKey: 'jiwa', mergeVal: d.jiwa * 1.5
     });
     rows.push({
@@ -235,7 +235,7 @@ function buildRows(d, badge) {
       key: 'masaKontrak', label: '📅 Masa Cover',
       val: `<div class="cv">Usia 99 Tahun</div>${b}`
     });
-    if (d.cpg) {
+    if (d.cpg != null) {
       rows.push({
         key: 'cpg', label: '🎁 Promo Periode Khusus',
         val: `<div class="cv">${d.cpg}</div><div class="csub">Jangan lewatkan kesempatan ini!</div>${b}`,
@@ -257,7 +257,7 @@ function buildRows(d, badge) {
     });
     rows.push({
       key: 'cpg', label: '💸 Ekstra Nilai UP+',
-      val: `<div class="cv">${rp(d.jiwa * 1.5)}</div><div class="csub">Perlingdungan meningkat sebesar 50% mulai usia 75th+</div>${b}`,
+      val: `<div class="cv">${rp(d.jiwa * 1.5)}</div><div class="csub">Perlindungan meningkat sebesar 50% mulai usia 75th+</div>${b}`,
       mergeKey: 'jiwa', mergeVal: d.jiwa * 1.5
     });
     rows.push({
@@ -268,7 +268,7 @@ function buildRows(d, badge) {
       key: 'masaKontrak', label: '📅 Masa Cover',
       val: `<div class="cv">Usia 99 Tahun</div>${b}`
     });
-    if (d.cpg) {
+    if (d.cpg != null) {
       rows.push({
         key: 'cpg', label: '🎁 Promo Periode Khusus',
         val: `<div class="cv">${d.cpg}</div><div class="csub">Jangan lewatkan kesempatan ini!</div>${b}`,
@@ -301,7 +301,7 @@ function buildRows(d, badge) {
       key: 'masaKontrak', label: '📅 Masa Cover',
       val: `<div class="cv">Usia 120 Tahun</div>${b}`
     });
-    if (d.cpg) {
+    if (d.cpg != null) {
       rows.push({
         key: 'cpg', label: '🎁 Promo Periode Khusus',
         val: `<div class="cv">${d.cpg}</div><div class="csub">Jangan lewatkan kesempatan ini!</div>${b}`,

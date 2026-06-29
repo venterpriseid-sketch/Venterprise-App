@@ -84,6 +84,7 @@ function renderBunGrid() {
   });
 
   restoreBunValues(saved);
+  attachMoneyInputFormatting(grid);
 }
 
 // ── Mutation helpers ─────────────────────────────────────────────
@@ -239,4 +240,6 @@ function rerenderBunTable() {
   html += '</tr>';
 
   g('bun-tbody').innerHTML = html;
+  attachMoneyInputFormatting(document);
+  enableEditableResult('bun');
 }
