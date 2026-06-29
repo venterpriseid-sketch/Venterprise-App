@@ -64,8 +64,8 @@ function generateStd() {
       <div class="vpill-txt">Aset dan keuangan tetap terjaga, Masalah Finansial tidak merugikan keluarga.</div>
     </div></div>
     <div class="vpill"><div class="vpill-ico">🏛️</div><div>
-      <div class="vpill-lbl">Warisan Terencana</div>
-      <div class="vpill-txt">Pastikan aset dan nilai hidup keluarga diwariskan dengan bermartabat.</div>
+      <div class="vpill-lbl">Tabungan Terencana</div>
+      <div class="vpill-txt">Pastikan usia tua Anda dijamin dengan tabungan terencana.</div>
     </div></div>`;
 
   g('std-res-title').textContent = 'Perbandingan Opsi Proteksi';
@@ -83,8 +83,13 @@ function initStdOptionsFromTemplate() {
 
   const optsList = [
     { v: 'spl', t: '🛡️ Smartlink Protection Life' },
+    { v: 'apl', t: '🛡️ AlliSya Protection Life' },
     { v: 'acp', t: '🏥 Allianz Critical Plus' },
-    { v: 'cih', t: '🏥 Allisya CI Hasanah' }
+    { v: 'cih', t: '🏥 AlliSya CI Hasanah' },
+    { v: 'lpu', t: '🪦 Allianz LegacyPro USD' },
+    { v: 'lpi', t: '🪦 Allianz LegacyPro IDR' },
+    { v: 'alm', t: '🪦 AlliSya LegacyMax' },
+    { v: 'azp', t: '💰 Allianz Pasti' }
   ];
 
   for (let i = 1; i <= 3; i++) {
