@@ -17,12 +17,25 @@ const escapeHtml = value => String(value ?? '')
   .replace(/"/g, '&quot;')
   .replace(/'/g, '&#39;');
 
-function formatMoneyInput(el) {
+function formatMoneyInput(el, isFocus = false) {
   if (!el) return;
+
   const raw = String(el.value || '').replace(/\D/g, '');
-  const digits = raw || '0';
+  const digits = raw || '';
   el.dataset.rawValue = digits;
-  const formatted = digits !== '0' ? parseInt(digits, 10).toLocaleString('id-ID') : '';
+
+  if (isFocus) {
+    el.value = digits;
+    return;
+  }
+
+  if (!digits) {
+    el.value = '';
+    return;
+  }
+
+  const parsed = parseInt(digits, 10);
+  const formatted = Number.isNaN(parsed) ? '' : parsed.toLocaleString('id-ID');
   if (el.value !== formatted) {
     el.value = formatted;
   }
@@ -33,18 +46,12 @@ function attachMoneyInputFormatting(root = document) {
   root.querySelectorAll('.money-input').forEach(el => {
     if (el.dataset.moneyBound) return;
     el.dataset.moneyBound = '1';
-    const sync = () => formatMoneyInput(el);
     ['input', 'keyup', 'paste', 'change', 'blur'].forEach(evt => {
-      el.addEventListener(evt, sync);
+      el.addEventListener(evt, () => formatMoneyInput(el));
     });
-    el.addEventListener('focus', () => {
-      const raw = String(el.dataset.rawValue || '').replace(/\D/g, '');
-      if (raw && raw !== '0') {
-        el.value = raw;
-      }
-    });
-    el.addEventListener('blur', sync);
-    sync();
+    el.addEventListener('focus', () => formatMoneyInput(el, true));
+    el.addEventListener('blur', () => formatMoneyInput(el));
+    formatMoneyInput(el);
   });
 }
 
@@ -52,8 +59,13 @@ const nv = id => {
   const el = g(id);
   if (!el) return 0;
   const raw = el.dataset.rawValue;
-  const v = raw !== undefined ? parseFloat(raw) : parseFloat(String(el.value || '').replace(/\D/g, ''));
-  return isNaN(v) ? 0 : v;
+  if (raw !== undefined) {
+    const parsed = parseFloat(raw);
+    return isNaN(parsed) ? 0 : parsed;
+  }
+  const digits = String(el.value || '').replace(/\D/g, '');
+  const parsed = digits ? parseFloat(digits) : 0;
+  return isNaN(parsed) ? 0 : parsed;
 };
 
 const sv = id => {

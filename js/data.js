@@ -311,7 +311,14 @@ function buildRows(d, badge) {
   }
 
   else if (d.type === 'azp') {
-    
+    rows.push({
+      key: 'soon', label: '🧩 Allianz Pasti',
+      val: `<div class="w-yes">🚧 Segera Hadir</div><div class="csub">Fitur Allianz Pasti sedang dalam pengembangan.</div>${b}`
+    });
+    rows.push({
+      key: 'masaKontrak', label: '📅 Status',
+      val: `<div class="cv">On Development</div>${b}`
+    });
   }
 
   return rows;
