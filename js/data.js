@@ -223,7 +223,7 @@ function buildRows(d, badge) {
       mergeKey: 'jiwa', mergeVal: d.jiwa
     });
     rows.push({
-      key: 'cpg', label: '💸 Ekstra Nilai UP+',
+      key: 'bonus', label: '💸 Ekstra Nilai UP+',
       val: `<div class="cv">${usd(d.jiwa * 1.5)}</div><div class="csub">Perlindungan meningkat sebesar 50% mulai usia 75th+</div>${b}`,
       mergeKey: 'jiwa', mergeVal: d.jiwa * 1.5
     });
@@ -256,7 +256,7 @@ function buildRows(d, badge) {
       mergeKey: 'jiwa', mergeVal: d.jiwa
     });
     rows.push({
-      key: 'cpg', label: '💸 Ekstra Nilai UP+',
+      key: 'bonus', label: '💸 Ekstra Nilai UP+',
       val: `<div class="cv">${rp(d.jiwa * 1.5)}</div><div class="csub">Perlindungan meningkat sebesar 50% mulai usia 75th+</div>${b}`,
       mergeKey: 'jiwa', mergeVal: d.jiwa * 1.5
     });
@@ -289,7 +289,7 @@ function buildRows(d, badge) {
       mergeKey: 'jiwa', mergeVal: d.jiwa
     });
     rows.push({
-      key: 'cpg', label: '💸 Ekstra Nilai UP',
+      key: 'bonus', label: '💸 Ekstra Nilai UP',
       val: `<div class="cv">${rp(d.jiwa * 0.1)}</div><div class="csub">Perlindungan meningkat sebesar 10% per 10 Tahun mulai Th-25</div>${b}`,
       mergeKey: 'jiwa', mergeVal: d.jiwa * 0.1
     });
@@ -314,10 +314,6 @@ function buildRows(d, badge) {
     rows.push({
       key: 'soon', label: '🧩 Allianz Pasti',
       val: `<div class="w-yes">🚧 Segera Hadir</div><div class="csub">Fitur Allianz Pasti sedang dalam pengembangan.</div>${b}`
-    });
-    rows.push({
-      key: 'masaKontrak', label: '📅 Status',
-      val: `<div class="cv">On Development</div>${b}`
     });
   }
 
