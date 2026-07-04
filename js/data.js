@@ -235,7 +235,7 @@ function buildRows(d, badge) {
       key: 'masaKontrak', label: '📅 Masa Cover',
       val: `<div class="cv">Usia 99 Tahun</div>${b}`
     });
-    if (d.cpg != null) {
+    if (d.cpg && String(d.cpg).trim()) {
       rows.push({
         key: 'cpg', label: '🎁 Promo Periode Khusus',
         val: `<div class="cv">${d.cpg}</div><div class="csub">Jangan lewatkan kesempatan ini!</div>${b}`,
@@ -268,7 +268,7 @@ function buildRows(d, badge) {
       key: 'masaKontrak', label: '📅 Masa Cover',
       val: `<div class="cv">Usia 99 Tahun</div>${b}`
     });
-    if (d.cpg != null) {
+    if (d.cpg && String(d.cpg).trim()) {
       rows.push({
         key: 'cpg', label: '🎁 Promo Periode Khusus',
         val: `<div class="cv">${d.cpg}</div><div class="csub">Jangan lewatkan kesempatan ini!</div>${b}`,
@@ -301,7 +301,7 @@ function buildRows(d, badge) {
       key: 'masaKontrak', label: '📅 Masa Cover',
       val: `<div class="cv">Usia 120 Tahun</div>${b}`
     });
-    if (d.cpg != null) {
+    if (d.cpg && String(d.cpg).trim()) {
       rows.push({
         key: 'cpg', label: '🎁 Promo Periode Khusus',
         val: `<div class="cv">${d.cpg}</div><div class="csub">Jangan lewatkan kesempatan ini!</div>${b}`,
