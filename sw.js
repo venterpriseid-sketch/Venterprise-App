@@ -5,7 +5,10 @@ const FALLBACK_VERSION = '0.0';
 
 async function getRuntimeVersion() {
   try {
-    const res = await fetch('./version.txt?t=' + Date.now(), { cache: 'no-store' });
+    const res = await fetch('./version.txt?t=' + Date.now(), {
+      cache: 'no-store',
+      headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+    });
     const version = (await res.text()).trim();
     return version || FALLBACK_VERSION;
   } catch {
@@ -15,6 +18,14 @@ async function getRuntimeVersion() {
 
 async function getCacheName() {
   return 'venterprise-v' + await getRuntimeVersion();
+}
+
+function getVersionedUrl(requestUrl, version = FALLBACK_VERSION) {
+  const safeVersion = String(version).replace(/[^a-zA-Z0-9._-]/g, '') || FALLBACK_VERSION;
+  const url = new URL(requestUrl, self.location.origin);
+  url.searchParams.set('v', safeVersion);
+  url.searchParams.set('t', String(Date.now()));
+  return url.toString();
 }
 
 const PRECACHE = [
@@ -35,10 +46,10 @@ const PRECACHE = [
 
 // ── Install: pre-cache all app shell assets ───────────────────────
 self.addEventListener('install', event => {
+  self.skipWaiting();
   event.waitUntil(
     getCacheName().then(cacheName => caches.open(cacheName).then(cache => cache.addAll(PRECACHE)))
   );
-  // Don't call skipWaiting here — we let the page decide when to activate
 });
 
 // ── Activate: clean up old caches ────────────────────────────────
@@ -56,36 +67,49 @@ self.addEventListener('activate', event => {
   );
 });
 
-// ── Fetch: cache-first for app shell, network-first for version.txt ──
+// ── Fetch: always try network first for app shell and assets, then fall back to cache ──
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  // Always hit network for version.txt (update checks)
+  if (event.request.method !== 'GET') return;
+
   if (url.pathname.endsWith('version.txt')) {
     event.respondWith(
-      fetch(event.request).catch(() => caches.match(event.request))
+      fetch(event.request.url + (event.request.url.includes('?') ? '&' : '?') + 't=' + Date.now(), {
+        cache: 'no-store',
+        headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+      }).catch(() => caches.match(event.request))
     );
     return;
   }
 
-  // Cache-first for everything else
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(response => {
-        // Cache successful GET responses
-        if (response && response.status === 200 && event.request.method === 'GET') {
-          const clone = response.clone();
-          getCacheName().then(cacheName => caches.open(cacheName).then(cache => cache.put(event.request, clone)));
+    (async () => {
+      const version = await getRuntimeVersion();
+      const networkUrl = getVersionedUrl(event.request.url, version);
+
+      try {
+        const response = await fetch(networkUrl, {
+          cache: 'no-store',
+          headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+        });
+
+        if (response && response.status === 200) {
+          const cacheName = await getCacheName();
+          const cache = await caches.open(cacheName);
+          await cache.put(event.request, response.clone());
         }
+
         return response;
-      }).catch(() => {
-        // Offline fallback — return index for navigation requests
+      } catch (err) {
+        const cached = await caches.match(event.request);
+        if (cached) return cached;
         if (event.request.mode === 'navigate') {
           return caches.match('./index.html');
         }
-      });
-    })
+        throw err;
+      }
+    })()
   );
 });
 
